@@ -11,10 +11,12 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.18",
     "@portabletext/react": "^5.0.0",
     "@sanity/client": "^7.12.1",
     "@sendgrid/mail": "^8.1.6",
     "@tailwindcss/forms": "^0.5.10",
+    "@vercel/analytics": "^1.5.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",

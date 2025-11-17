@@ -1,0 +1,288 @@
+{
+  "city": "Fort Worth",
+  "state": "TX",
+  "locations": [
+    "Downtown Fort Worth",
+    "West 7th Street",
+    "Sundance Square",
+    "Cultural District",
+    "Stockyards District",
+    "Near Southside",
+    "TCU Area",
+    "Ridglea",
+    "Arlington Heights",
+    "Riverside",
+    "Westover Hills",
+    "Westworth Village",
+    "Saginaw",
+    "North Richland Hills",
+    "Haltom City",
+    "Richland Hills",
+    "Watauga",
+    "Keller",
+    "Southlake",
+    "Grapevine",
+    "Colleyville",
+    "Bedford",
+    "Euless",
+    "Hurst",
+    "Burleson",
+    "Crowley",
+    "Benbrook",
+    "White Settlement",
+    "Lake Worth",
+    "Sansom Park",
+    "River Oaks",
+    "Edgecliff Village",
+    "Everman",
+    "Forest Hill",
+    "Kennedale"
+  ],
+  "inventoryTypes": [
+    "Office Buildings",
+    "Retail Properties",
+    "Industrial Warehouses",
+    "Multi-Family Apartments",
+    "Single Tenant Net Lease",
+    "Medical Office Buildings",
+    "Self-Storage Facilities",
+    "Hotels and Hospitality",
+    "Mixed-Use Developments",
+    "Land Development",
+    "Student Housing",
+    "Senior Living Facilities",
+    "Manufacturing Facilities",
+    "Distribution Centers",
+    "Shopping Centers",
+    "Strip Malls",
+    "Restaurant Properties",
+    "Automotive Service Centers",
+    "Gas Stations and Convenience Stores",
+    "Agricultural Land"
+  ],
+  "promptTemplates": {
+    "locationInventory": "Generate comprehensive 1031 exchange content for {inventoryType} properties in {location}, Fort Worth, TX. Include market analysis, tax benefits, investment opportunities, and local market trends specific to this area.",
+    "locationOverview": "Create detailed content about 1031 exchange opportunities in {location}, Fort Worth, TX. Cover property types available, market conditions, growth potential, and why this area is ideal for 1031 exchanges.",
+    "inventoryTypeOverview": "Write comprehensive content about {inventoryType} as a 1031 exchange property type in Fort Worth, TX. Include benefits, risks, market trends, and investment strategies.",
+    "locationInventoryCombined": "Develop in-depth content about {inventoryType} properties in {location}, Fort Worth, TX for 1031 exchange investors. Include property values, rental rates, appreciation potential, and tax deferral strategies."
+  },
+  "generationPrompts": [
+    {
+      "type": "location",
+      "prompt": "Write a comprehensive guide about 1031 exchange opportunities in Downtown Fort Worth, TX. Include available property types, market trends, investment potential, and tax benefits."
+    },
+    {
+      "type": "location",
+      "prompt": "Create detailed content about 1031 exchange properties in the Stockyards District, Fort Worth, TX. Cover commercial real estate options, historical significance, and investment opportunities."
+    },
+    {
+      "type": "location",
+      "prompt": "Generate content about 1031 exchange opportunities in the Cultural District, Fort Worth, TX. Include property types, market analysis, and why this area attracts investors."
+    },
+    {
+      "type": "location",
+      "prompt": "Write about 1031 exchange properties in West 7th Street, Fort Worth, TX. Cover retail, office, and mixed-use opportunities in this vibrant area."
+    },
+    {
+      "type": "location",
+      "prompt": "Create content about 1031 exchange investments in Near Southside, Fort Worth, TX. Include medical office buildings, retail spaces, and development opportunities."
+    },
+    {
+      "type": "location",
+      "prompt": "Generate comprehensive guide about 1031 exchange opportunities in TCU Area, Fort Worth, TX. Cover student housing, retail, and residential investment properties."
+    },
+    {
+      "type": "location",
+      "prompt": "Write detailed content about 1031 exchange properties in Ridglea, Fort Worth, TX. Include commercial real estate options and market trends."
+    },
+    {
+      "type": "location",
+      "prompt": "Create content about 1031 exchange investments in Arlington Heights, Fort Worth, TX. Cover available property types and investment potential."
+    },
+    {
+      "type": "location",
+      "prompt": "Generate guide about 1031 exchange opportunities in Riverside, Fort Worth, TX. Include property values, rental rates, and tax deferral benefits."
+    },
+    {
+      "type": "location",
+      "prompt": "Write about 1031 exchange properties in Westover Hills, Fort Worth, TX. Cover luxury commercial and residential investment opportunities."
+    },
+    {
+      "type": "location",
+      "prompt": "Create content about 1031 exchange investments in Saginaw, Fort Worth, TX. Include industrial, retail, and office property options."
+    },
+    {
+      "type": "location",
+      "prompt": "Generate comprehensive guide about 1031 exchange opportunities in North Richland Hills, Fort Worth, TX. Cover commercial real estate and market trends."
+    },
+    {
+      "type": "location",
+      "prompt": "Write detailed content about 1031 exchange properties in Keller, Fort Worth, TX. Include retail, office, and mixed-use investment opportunities."
+    },
+    {
+      "type": "location",
+      "prompt": "Create content about 1031 exchange investments in Southlake, Fort Worth, TX. Cover high-end commercial properties and market analysis."
+    },
+    {
+      "type": "location",
+      "prompt": "Generate guide about 1031 exchange opportunities in Grapevine, Fort Worth, TX. Include hospitality, retail, and office property types."
+    },
+    {
+      "type": "location",
+      "prompt": "Write about 1031 exchange properties in Colleyville, Fort Worth, TX. Cover commercial real estate options and investment potential."
+    },
+    {
+      "type": "location",
+      "prompt": "Create content about 1031 exchange investments in Bedford, Fort Worth, TX. Include industrial, retail, and office opportunities."
+    },
+    {
+      "type": "location",
+      "prompt": "Generate comprehensive guide about 1031 exchange opportunities in Euless, Fort Worth, TX. Cover property types and market trends."
+    },
+    {
+      "type": "location",
+      "prompt": "Write detailed content about 1031 exchange properties in Hurst, Fort Worth, TX. Include commercial real estate and investment analysis."
+    },
+    {
+      "type": "location",
+      "prompt": "Create content about 1031 exchange investments in Burleson, Fort Worth, TX. Cover retail, office, and industrial property options."
+    },
+    {
+      "type": "location",
+      "prompt": "Generate guide about 1031 exchange opportunities in Crowley, Fort Worth, TX. Include property values and investment potential."
+    },
+    {
+      "type": "location",
+      "prompt": "Write about 1031 exchange properties in Benbrook, Fort Worth, TX. Cover commercial real estate and market trends."
+    },
+    {
+      "type": "location",
+      "prompt": "Create content about 1031 exchange investments in White Settlement, Fort Worth, TX. Include industrial and retail opportunities."
+    },
+    {
+      "type": "location",
+      "prompt": "Generate comprehensive guide about 1031 exchange opportunities in Lake Worth, Fort Worth, TX. Cover property types and investment benefits."
+    },
+    {
+      "type": "location",
+      "prompt": "Write detailed content about 1031 exchange properties in River Oaks, Fort Worth, TX. Include commercial real estate options."
+    },
+    {
+      "type": "location",
+      "prompt": "Create content about 1031 exchange investments in Edgecliff Village, Fort Worth, TX. Cover available property types."
+    },
+    {
+      "type": "location",
+      "prompt": "Generate guide about 1031 exchange opportunities in Everman, Fort Worth, TX. Include market analysis and investment potential."
+    },
+    {
+      "type": "location",
+      "prompt": "Write about 1031 exchange properties in Forest Hill, Fort Worth, TX. Cover commercial real estate and tax benefits."
+    },
+    {
+      "type": "location",
+      "prompt": "Create content about 1031 exchange investments in Kennedale, Fort Worth, TX. Include property types and market trends."
+    },
+    {
+      "type": "location",
+      "prompt": "Generate comprehensive guide about 1031 exchange opportunities in Haltom City, Fort Worth, TX. Cover industrial, retail, and office properties."
+    },
+    {
+      "type": "location",
+      "prompt": "Write detailed content about 1031 exchange properties in Richland Hills, Fort Worth, TX. Include investment opportunities and market analysis."
+    },
+    {
+      "type": "location",
+      "prompt": "Create content about 1031 exchange investments in Watauga, Fort Worth, TX. Cover commercial real estate options."
+    },
+    {
+      "type": "location",
+      "prompt": "Generate guide about 1031 exchange opportunities in Westworth Village, Fort Worth, TX. Include property types and investment potential."
+    },
+    {
+      "type": "location",
+      "prompt": "Write about 1031 exchange properties in Sansom Park, Fort Worth, TX. Cover available commercial real estate."
+    },
+    {
+      "type": "inventory",
+      "prompt": "Write comprehensive guide about Office Buildings as 1031 exchange properties in Fort Worth, TX. Include market rates, occupancy trends, and tax deferral benefits."
+    },
+    {
+      "type": "inventory",
+      "prompt": "Create detailed content about Retail Properties for 1031 exchanges in Fort Worth, TX. Cover strip malls, shopping centers, and single-tenant retail investments."
+    },
+    {
+      "type": "inventory",
+      "prompt": "Generate guide about Industrial Warehouses as 1031 exchange properties in Fort Worth, TX. Include distribution centers, manufacturing facilities, and market trends."
+    },
+    {
+      "type": "inventory",
+      "prompt": "Write about Multi-Family Apartments for 1031 exchanges in Fort Worth, TX. Cover rental rates, occupancy, and investment strategies."
+    },
+    {
+      "type": "inventory",
+      "prompt": "Create content about Single Tenant Net Lease properties for 1031 exchanges in Fort Worth, TX. Include benefits, risks, and market availability."
+    },
+    {
+      "type": "inventory",
+      "prompt": "Generate comprehensive guide about Medical Office Buildings as 1031 exchange properties in Fort Worth, TX. Cover market trends and investment potential."
+    },
+    {
+      "type": "inventory",
+      "prompt": "Write detailed content about Self-Storage Facilities for 1031 exchanges in Fort Worth, TX. Include market analysis and growth potential."
+    },
+    {
+      "type": "inventory",
+      "prompt": "Create guide about Hotels and Hospitality properties for 1031 exchanges in Fort Worth, TX. Cover market rates and investment opportunities."
+    },
+    {
+      "type": "inventory",
+      "prompt": "Generate content about Mixed-Use Developments as 1031 exchange properties in Fort Worth, TX. Include residential, retail, and office combinations."
+    },
+    {
+      "type": "inventory",
+      "prompt": "Write about Land Development opportunities for 1031 exchanges in Fort Worth, TX. Cover raw land, entitled land, and development potential."
+    },
+    {
+      "type": "inventory",
+      "prompt": "Create comprehensive guide about Student Housing as 1031 exchange properties in Fort Worth, TX. Include near TCU and other educational institutions."
+    },
+    {
+      "type": "inventory",
+      "prompt": "Generate detailed content about Senior Living Facilities for 1031 exchanges in Fort Worth, TX. Cover market trends and investment benefits."
+    },
+    {
+      "type": "inventory",
+      "prompt": "Write guide about Manufacturing Facilities as 1031 exchange properties in Fort Worth, TX. Include market analysis and investment potential."
+    },
+    {
+      "type": "inventory",
+      "prompt": "Create content about Distribution Centers for 1031 exchanges in Fort Worth, TX. Cover logistics hubs and market trends."
+    },
+    {
+      "type": "inventory",
+      "prompt": "Generate comprehensive guide about Shopping Centers as 1031 exchange properties in Fort Worth, TX. Include anchor tenants and market analysis."
+    },
+    {
+      "type": "inventory",
+      "prompt": "Write detailed content about Strip Malls for 1031 exchanges in Fort Worth, TX. Cover tenant mix and investment strategies."
+    },
+    {
+      "type": "inventory",
+      "prompt": "Create guide about Restaurant Properties for 1031 exchanges in Fort Worth, TX. Include freestanding restaurants and pad sites."
+    },
+    {
+      "type": "inventory",
+      "prompt": "Generate content about Automotive Service Centers as 1031 exchange properties in Fort Worth, TX. Cover market trends and investment benefits."
+    },
+    {
+      "type": "inventory",
+      "prompt": "Write about Gas Stations and Convenience Stores for 1031 exchanges in Fort Worth, TX. Include market analysis and investment potential."
+    },
+    {
+      "type": "inventory",
+      "prompt": "Create comprehensive guide about Agricultural Land as 1031 exchange properties in Fort Worth, TX. Cover farmland and ranchland opportunities."
+    }
+  ]
+}
+

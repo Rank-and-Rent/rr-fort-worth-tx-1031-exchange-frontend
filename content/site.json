@@ -1,12 +1,81 @@
 {
   "company": "1031 Exchange Fort Worth",
-  "phone": "",
-  "phoneDigits": "",
+  "phone": "817-985-3561",
+  "phoneDigits": "8179853561",
+  "email": "help@1031exchangefortworth.com",
+  "address": "801 Cherry St, Fort Worth, TX 76102",
+  "website": "1031exchangefortworth.com",
   "mainCity": "Fort Worth",
   "state": "TX",
   "services": [],
-  "servicesNav": [],
-  "locationsNav": [],
+  "servicesNav": [
+    {
+      "label": "Forward Exchange",
+      "href": "/services/forward-exchange"
+    },
+    {
+      "label": "Reverse Exchange",
+      "href": "/services/reverse-exchange"
+    },
+    {
+      "label": "Qualified Intermediary Services",
+      "href": "/services/qualified-intermediary-services"
+    },
+    {
+      "label": "Property Identification",
+      "href": "/services/property-identification"
+    },
+    {
+      "label": "NNN Property Identification",
+      "href": "/services/nnn-property-identification"
+    },
+    {
+      "label": "Exchange Consultation",
+      "href": "/services/exchange-consultation"
+    },
+    {
+      "label": "Form 8824 Preparation",
+      "href": "/services/form-8824-preparation"
+    },
+    {
+      "label": "Boot Analysis",
+      "href": "/services/boot-analysis"
+    }
+  ],
+  "locationsNav": [
+    {
+      "label": "Fort Worth",
+      "href": "/locations/fort-worth"
+    },
+    {
+      "label": "Dallas",
+      "href": "/locations/dallas"
+    },
+    {
+      "label": "Arlington",
+      "href": "/locations/arlington"
+    },
+    {
+      "label": "Irving",
+      "href": "/locations/irving"
+    },
+    {
+      "label": "Plano",
+      "href": "/locations/plano"
+    },
+    {
+      "label": "Frisco",
+      "href": "/locations/frisco"
+    },
+    {
+      "label": "McKinney",
+      "href": "/locations/mckinney"
+    },
+    {
+      "label": "All Locations",
+      "href": "/locations"
+    }
+  ],
   "extraLinks": [
     {
       "label": "Contact",

@@ -1,4 +1,35 @@
-@tailwind base; @tailwind components; @tailwind utilities;
-:root { color-scheme: dark; } html, body { height: 100%; } body { @apply bg-paper text-ink antialiased; }
-.container { @apply px-4 max-w-6xl mx-auto; }
-:where(a,button,[role="button"],input,select,textarea):focus-visible { outline:2px solid theme('colors.outline'); outline-offset:2px; }
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #0B0F13;
+  --color-ink: #E7E9EC;
+  --color-heading: #FFFFFF;
+  --color-primary: #0EA5A6;
+  --color-primaryfg: #0B0F13;
+  --color-secondary: #111827;
+  --color-secondaryfg: #F5F7FA;
+  --color-outline: #334155;
+  --color-panel: #11151B;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  @apply bg-paper text-ink antialiased;
+}
+
+main {
+  @apply flex-1;
+}
+
+:where(a, button, [role="button"], input, select, textarea):focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}

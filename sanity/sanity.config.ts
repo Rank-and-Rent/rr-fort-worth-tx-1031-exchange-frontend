@@ -16,7 +16,7 @@ const dataset = process.env.SANITY_STUDIO_DATASET || 'production'
 
 export default defineConfig({
   name: 'default',
-  title: '1031exchangenewyork.com',
+  title: '1031exchangefortworth.com',
 
   projectId,
   dataset,

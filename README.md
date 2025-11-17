@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Taxonomy Rationale
+
+This 1031 exchange website is structured to support nationwide replacement property identification while maintaining focus on the Fort Worth, TX market. The taxonomy includes 24 services organized into seven categories (Timelines, Structures, Execution, Tax, Reporting, Property Paths, Education) to cover the full spectrum of 1031 exchange needs from basic forward exchanges to specialized property identification services. The 34 locations span the Fort Worth metro area and include remote services, enabling local market presence while supporting nationwide property searches. Twenty property types are selected from a tiered catalog prioritizing core single tenant retail (convenience stores, drive thru QSR, pharmacies, dollar stores) with strategic additions for suburban markets (urgent care, veterinary clinics, auto service) and logistics (last mile flex, ground lease outparcels). This structure balances local SEO for Fort Worth investors with the ability to identify replacement properties nationwide, supporting the rank and rent model where inquiries are routed to fulfillment partners while maintaining educational content that helps investors understand their options.
+
 ## Getting Started
 
 First, run the development server:

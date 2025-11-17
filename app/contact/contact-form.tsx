@@ -196,7 +196,7 @@ function ContactFormInner({
   }, []);
 
   const handleChange =
-    (field: keyof FormState) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    (field: keyof FormState) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
       setFormState((prev) => ({ ...prev, [field]: event.target.value }));
     };
 

@@ -66,7 +66,7 @@ export default function InventoryCTA({ variant = "default", propertyType, urgenc
               Request Inventory Access
             </Link>
           </div>
-          <p className="text-xs text-primaryfg/70">Available 24/7 • Same-day property matching • IRS-compliant</p>
+          <p className="text-xs text-primaryfg/70">Monday-Friday: 8am-6pm • Same-day property matching • IRS-compliant</p>
         </div>
       </section>
     );

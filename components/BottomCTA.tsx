@@ -26,7 +26,7 @@ export default function BottomCTA() {
             Get In Touch
           </Link>
         </div>
-        <p className="text-xs text-primaryfg/70">Available 24/7 • Same-day property matching • Free consultation</p>
+        <p className="text-xs text-primaryfg/70">Monday-Friday: 8am-6pm • Same-day property matching • Free consultation</p>
       </div>
     </section>
   );

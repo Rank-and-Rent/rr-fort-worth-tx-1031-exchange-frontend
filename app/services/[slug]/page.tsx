@@ -13,6 +13,7 @@ import { createPageMetadata, getBreadcrumbJsonLd, getServiceSchema } from "@/lib
 import { PRIMARY_CITY, PRIMARY_STATE_ABBR } from "@/lib/constants";
 import RelatedServices from "@/components/services/RelatedServices";
 import { getServiceBatchData } from "@/lib/batch-data";
+import { getShortServiceName } from "@/lib/service-names";
 
 type Params = Promise<{ slug: string }> | { slug: string };
 
@@ -42,7 +43,7 @@ export default async function ServicePage({ params }: { params: Params }) {
   const breadcrumbs = [
     { label: "Home", href: "/" },
     { label: "Services", href: "/services" },
-    { label: service.name, href: `/services/${service.slug}` },
+    { label: getShortServiceName(service.slug), href: `/services/${service.slug}` },
   ];
 
   // Use batch FAQs if available, otherwise fallback to generated FAQs
@@ -57,7 +58,7 @@ export default async function ServicePage({ params }: { params: Params }) {
         <Breadcrumbs items={breadcrumbs} />
         <header className="space-y-4 rounded-2xl border border-outline bg-secondary/40 p-6">
           <p className="text-xs uppercase tracking-[0.35em] text-ink/60">{service.category || "Service"}</p>
-          <h1 className="text-4xl font-semibold text-heading">{service.name}</h1>
+          <h1 className="text-4xl font-semibold text-heading">{getShortServiceName(service.slug)}</h1>
           <p className="text-base text-ink/85">{service.short}</p>
           <div className="flex flex-wrap gap-3">
             <a

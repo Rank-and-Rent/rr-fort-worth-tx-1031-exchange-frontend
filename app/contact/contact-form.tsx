@@ -2,38 +2,59 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import Script from "next/script";
 import clsx from "clsx";
 import {
   CONTACT_EMAIL,
   CONTACT_PHONE,
   CONTACT_PHONE_DIGITS,
-  FORM_INPUT_IDS,
 } from "@/lib/constants";
+import { servicesData } from "@/data/services";
+import { getShortServiceName } from "@/lib/service-names";
 
 declare global {
   interface Window {
-    turnstile?: TurnstileWindow;
+    _turnstileLoaded?: boolean;
+    _lastTurnstileToken?: string;
+    turnstile?: {
+      render: (element: HTMLElement, options: Record<string, unknown>) => string;
+      execute: (widgetId: string, options?: Record<string, unknown>) => Promise<string>;
+      reset: (widgetId: string) => void;
+    };
   }
 }
 
-type TurnstileWindow = {
-  render: (element: HTMLElement, options: TurnstileOptions) => number;
-  reset: (widgetId: number) => void;
-};
-
-type TurnstileOptions = {
-  sitekey: string;
-  callback?: (token: string) => void;
-  "error-callback"?: () => void;
-  "expired-callback"?: () => void;
-  theme?: "light" | "dark";
-  tabindex?: number;
-};
-
 const TURNSTILE_SCRIPT_ID = "cf-turnstile-script";
-const TURNSTILE_SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+const TURNSTILE_SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
+// Utility to load Turnstile script exactly once
+function loadTurnstile(): Promise<void> {
+  if (typeof window === "undefined") return Promise.resolve();
+  if (window._turnstileLoaded) return Promise.resolve();
+
+  return new Promise<void>((resolve, reject) => {
+    const existing = document.querySelector<HTMLScriptElement>(
+      'script[src^="https://challenges.cloudflare.com/turnstile/v0/api.js"]'
+    );
+    if (existing) {
+      window._turnstileLoaded = true;
+      return resolve();
+    }
+    const s = document.createElement("script");
+    s.src = TURNSTILE_SRC;
+    s.async = true;
+    s.defer = true;
+    s.onload = () => {
+      window._turnstileLoaded = true;
+      resolve();
+    };
+    s.onerror = () => {
+      console.error("Failed to load Turnstile script");
+      reject(new Error("Turnstile script failed to load"));
+    };
+    document.head.appendChild(s);
+  });
+}
 
 type ContactFormProps = {
   heading?: string;
@@ -45,22 +66,52 @@ type ContactFormProps = {
 
 type FormState = {
   name: string;
+  company: string;
   email: string;
   phone: string;
-  propertySold: string;
-  estimatedClose: string;
-  city: string;
-  message: string;
+  projectType: string;
+  timeline: string;
+  details: string;
 };
 
 const defaultState: FormState = {
   name: "",
+  company: "",
   email: "",
   phone: "",
-  propertySold: "",
-  estimatedClose: "",
-  city: "",
-  message: "",
+  projectType: "",
+  timeline: "",
+  details: "",
+};
+
+// Base project types
+const baseProjectTypes = [
+  'Multifamily Property Identification',
+  'Industrial Property Search',
+  'Triple Net Retail Properties',
+  'Medical Office Buildings',
+  'Self Storage Facilities',
+  'Hospitality Assets',
+  'Land Development Sites',
+  'Mixed Use Properties',
+  'Exchange Timeline Planning',
+  'Qualified Intermediary Coordination',
+  'Reverse Exchange Setup',
+  'Construction Exchange Oversight',
+  'CPA and Attorney Alignment',
+  'Other'
+];
+
+// Get all service names from servicesData
+const allServiceNames = servicesData.map(service => getShortServiceName(service.slug));
+
+// Combine base types with service names, removing duplicates
+const getAllProjectTypes = (customType?: string): string[] => {
+  const types = new Set([...baseProjectTypes, ...allServiceNames]);
+  if (customType && customType.trim()) {
+    types.add(customType.trim());
+  }
+  return Array.from(types).sort();
 };
 
 function ContactFormInner({
@@ -74,63 +125,75 @@ function ContactFormInner({
   const [formState, setFormState] = useState<FormState>(defaultState);
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
-  const [captchaToken, setCaptchaToken] = useState("");
-  const [captchaReady, setCaptchaReady] = useState(false);
-  const [captchaError, setCaptchaError] = useState<string | null>(null);
+  const [turnstileId, setTurnstileId] = useState<string | null>(null);
+  const [turnstileReady, setTurnstileReady] = useState(false);
   const captchaContainerRef = useRef<HTMLDivElement | null>(null);
-  const widgetIdRef = useRef<number | null>(null);
 
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-  const contextualNote = projectTypeFromParams || prefillProjectType;
+  // Get projectType from URL params to include in dropdown options
+  const projectTypeParam = projectTypeFromParams || prefillProjectType;
+  
+  // Memoize project types list to include any custom type from URL
+  const projectTypes = getAllProjectTypes(projectTypeParam || undefined);
 
   useEffect(() => {
-    if (contextualNote) {
-      setFormState((prev) => ({
-        ...prev,
-        message: prev.message
-          ? `${prev.message}\n\nRequested focus: ${contextualNote}`
-          : `Requested focus: ${contextualNote}`,
-      }));
+    // Prefill form from URL parameters
+    if (projectTypeParam) {
+      setFormState(prev => ({ ...prev, projectType: projectTypeParam }));
     }
-  }, [contextualNote]);
+  }, [projectTypeParam]);
 
+  // Load Turnstile script
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (window.turnstile) {
-      setCaptchaReady(true);
-    }
+    let cancelled = false;
+    const initTimeout = setTimeout(async () => {
+      if (cancelled) return;
+      if (!TURNSTILE_SITE_KEY) return;
+
+      try {
+        await loadTurnstile();
+        if (cancelled) return;
+
+        if (!window.turnstile) {
+          console.error("Turnstile API not available");
+          return;
+        }
+
+        if (!captchaContainerRef.current) {
+          console.error("Turnstile ref not mounted");
+          return;
+        }
+
+        const id: string = window.turnstile.render(captchaContainerRef.current, {
+          sitekey: TURNSTILE_SITE_KEY,
+          size: "normal",
+          callback: () => {
+            setTurnstileReady(true);
+          },
+          "error-callback": () => {
+            console.warn("Turnstile error");
+            setTurnstileReady(false);
+          },
+          "timeout-callback": () => {
+            console.warn("Turnstile timeout");
+            setTurnstileReady(false);
+          },
+        });
+        setTurnstileId(id);
+        setTurnstileReady(true);
+        console.log("Turnstile initialized successfully");
+      } catch (error) {
+        console.error("Failed to initialize Turnstile:", error);
+        setTurnstileReady(false);
+      }
+    }, 500);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(initTimeout);
+    };
   }, []);
-
-  useEffect(() => {
-    if (!captchaReady || !TURNSTILE_SITE_KEY || !captchaContainerRef.current) return;
-    if (!window.turnstile) return;
-    if (widgetIdRef.current !== null) {
-      window.turnstile.reset(widgetIdRef.current);
-    }
-    widgetIdRef.current = window.turnstile.render(captchaContainerRef.current, {
-      sitekey: TURNSTILE_SITE_KEY,
-      callback: (token) => {
-        setCaptchaToken(token);
-        setCaptchaError(null);
-      },
-      "error-callback": () => {
-        setCaptchaError("Captcha failed. Please refresh and try again.");
-      },
-      "expired-callback": () => {
-        setCaptchaToken("");
-      },
-      theme: "light",
-      tabindex: 0,
-    });
-  }, [captchaReady]);
-
-  const resetCaptcha = () => {
-    if (widgetIdRef.current !== null && window.turnstile) {
-      window.turnstile.reset(widgetIdRef.current);
-    }
-    setCaptchaToken("");
-  };
 
   const handleChange =
     (field: keyof FormState) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -138,21 +201,22 @@ function ContactFormInner({
     };
 
   const validate = () => {
-    if (!formState.name.trim()) return "Please add your name.";
-    if (!formState.email.trim()) return "Please add a valid email.";
-    if (!formState.phone.trim()) return "Please add a phone number.";
-    if (!formState.propertySold.trim()) return "Tell us what property you sold.";
-    if (!formState.estimatedClose.trim()) return "Add your target closing date.";
-    if (!formState.city.trim()) return "Share the city you are investing from.";
-    if (!formState.message.trim()) return "Add a brief message.";
-    if (!captchaToken) return "Please complete the CAPTCHA challenge.";
+    if (!formState.name.trim()) return "Name is required";
+    if (!formState.email.trim()) return "Email is required";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email)) return "Valid email required";
+    if (!formState.phone.trim()) return "Phone is required";
+    if (!formState.projectType) return "Project type is required";
+    if (!formState.timeline.trim()) return "Timeline is required";
+    if (!formState.details.trim()) return "Please provide details about your project";
+    if (TURNSTILE_SITE_KEY && (!turnstileReady || !window.turnstile || !turnstileId)) {
+      return "Please complete the security verification.";
+    }
     return null;
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
-    setCaptchaError(null);
 
     const validationError = validate();
     if (validationError) {
@@ -162,15 +226,82 @@ function ContactFormInner({
 
     try {
       setStatus("submitting");
-      await new Promise((resolve) => setTimeout(resolve, 800));
-      setStatus("success");
-      setFormState(defaultState);
-      resetCaptcha();
+
+      // Get Turnstile token
+      let turnstileToken = '';
+      if (TURNSTILE_SITE_KEY && window.turnstile && turnstileId) {
+        try {
+          // Reset before executing to avoid "already executed" error
+          window.turnstile.reset(turnstileId);
+          turnstileToken = await new Promise<string>((resolve, reject) => {
+            if (!window.turnstile) {
+              reject(new Error("Turnstile not available"));
+              return;
+            }
+            window.turnstile.execute(turnstileId, {
+              async: true,
+              action: "form_submit",
+              callback: (t: string) => resolve(t),
+              "error-callback": () => reject(new Error("turnstile-error")),
+              "timeout-callback": () => reject(new Error("turnstile-timeout")),
+            });
+          });
+        } catch (err) {
+          console.error("Turnstile execution error:", err);
+          setStatus("error");
+          setError('Security verification failed. Please try again.');
+          if (window.turnstile && turnstileId) {
+            window.turnstile.reset(turnstileId);
+          }
+          return;
+        }
+      }
+
+      // Prepare phone number (digits only)
+      const phoneDigits = formState.phone.replace(/\D/g, '');
+
+      // Submit to API
+      const response = await fetch('/api/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formState.name,
+          company: formState.company,
+          email: formState.email,
+          phone: phoneDigits,
+          projectType: formState.projectType,
+          timeline: formState.timeline,
+          details: formState.details,
+          'cf-turnstile-response': turnstileToken,
+        }),
+      });
+
+      if (response.ok) {
+        setStatus("success");
+        setFormState(defaultState);
+        // Reset turnstile
+        if (window.turnstile && turnstileId) {
+          window.turnstile.reset(turnstileId);
+        }
+      } else {
+        const errorData = await response.json().catch(() => ({ error: 'Failed to submit form' }));
+        setStatus("error");
+        setError(errorData.error || 'We could not send that message. Please try again or call us.');
+        // Reset turnstile on error
+        if (window.turnstile && turnstileId) {
+          window.turnstile.reset(turnstileId);
+        }
+      }
     } catch (err) {
       console.error(err);
       setStatus("error");
       setError("We could not send that message. Please try again or call us.");
-      resetCaptcha();
+      // Reset turnstile on error
+      if (window.turnstile && turnstileId) {
+        window.turnstile.reset(turnstileId);
+      }
     }
   };
 
@@ -178,12 +309,6 @@ function ContactFormInner({
 
   return (
     <>
-      <Script
-        src={TURNSTILE_SRC}
-        id={TURNSTILE_SCRIPT_ID}
-        strategy="lazyOnload"
-        onLoad={() => setCaptchaReady(true)}
-      />
       <section
         id={formId}
         className={clsx(
@@ -201,95 +326,135 @@ function ContactFormInner({
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-5" noValidate>
           <div className="grid gap-4 md:grid-cols-2">
-            <InputField
-              id={FORM_INPUT_IDS.name}
-              label="Name"
-              placeholder="Full name"
-              required
-              value={formState.name}
-              onChange={handleChange("name")}
-            />
-            <InputField
-              id={FORM_INPUT_IDS.email}
-              label="Email"
-              placeholder="you@example.com"
-              type="email"
-              required
-              value={formState.email}
-              onChange={handleChange("email")}
-            />
+            <div>
+              <label htmlFor="name" className="block text-sm font-semibold text-heading mb-2">
+                Name *
+              </label>
+              <input
+                type="text"
+                id="name"
+                value={formState.name}
+                onChange={(e) => handleChange("name")(e)}
+                className="w-full rounded-full border border-outline/60 bg-panel px-4 py-2.5 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none"
+                required
+              />
+              {error && error.includes("Name") && <p className="text-red-500 text-sm mt-1">{error}</p>}
+            </div>
+
+            <div>
+              <label htmlFor="company" className="block text-sm font-semibold text-heading mb-2">
+                Company
+              </label>
+              <input
+                type="text"
+                id="company"
+                value={formState.company}
+                onChange={(e) => handleChange("company")(e)}
+                className="w-full rounded-full border border-outline/60 bg-panel px-4 py-2.5 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none"
+              />
+            </div>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
-            <InputField
-              id={FORM_INPUT_IDS.phone}
-              label="Phone"
-              placeholder="817-555-0123"
-              type="tel"
-              required
-              value={formState.phone}
-              onChange={handleChange("phone")}
-            />
-            <InputField
-              id={FORM_INPUT_IDS.city}
-              label="City"
-              placeholder="City you are investing from"
-              required
-              value={formState.city}
-              onChange={handleChange("city")}
-            />
-          </div>
+            <div>
+              <label htmlFor="email" className="block text-sm font-semibold text-heading mb-2">
+                Email *
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={formState.email}
+                onChange={(e) => handleChange("email")(e)}
+                className="w-full rounded-full border border-outline/60 bg-panel px-4 py-2.5 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none"
+                required
+              />
+              {error && error.includes("Email") && <p className="text-red-500 text-sm mt-1">{error}</p>}
+            </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <InputField
-              id={FORM_INPUT_IDS.propertySold}
-              label="Property sold"
-              placeholder="Asset sold or equity to defer"
-              required
-              value={formState.propertySold}
-              onChange={handleChange("propertySold")}
-            />
-            <InputField
-              id={FORM_INPUT_IDS.estimatedClose}
-              label="Estimated close"
-              placeholder="Target closing date"
-              required
-              value={formState.estimatedClose}
-              onChange={handleChange("estimatedClose")}
-            />
+            <div>
+              <label htmlFor="phone" className="block text-sm font-semibold text-heading mb-2">
+                Phone *
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                value={formState.phone}
+                onChange={(e) => handleChange("phone")(e)}
+                className="w-full rounded-full border border-outline/60 bg-panel px-4 py-2.5 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none"
+                required
+              />
+              {error && error.includes("Phone") && <p className="text-red-500 text-sm mt-1">{error}</p>}
+            </div>
           </div>
 
           <div>
-            <label htmlFor={FORM_INPUT_IDS.message} className="mb-2 block text-sm font-semibold text-heading">
-              Message
+            <label htmlFor="projectType" className="block text-sm font-semibold text-heading mb-2">
+              Project Type *
             </label>
-            <textarea
-              id={FORM_INPUT_IDS.message}
-              name="message"
-              placeholder="Share your 45/180 timeline, property type focus, or questions."
-              className="min-h-[140px] w-full rounded-2xl border border-outline/60 bg-secondary/30 p-3 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none"
-              value={formState.message}
-              onChange={handleChange("message")}
-            />
+            <select
+              id="projectType"
+              value={formState.projectType}
+              onChange={(e) => handleChange("projectType")(e)}
+              className="w-full rounded-full border border-outline/60 bg-panel px-4 py-2.5 text-sm text-ink focus:border-accent focus:outline-none"
+              required
+            >
+              <option value="">Select a project type</option>
+              {projectTypes.map(type => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
+            {error && error.includes("Project type") && <p className="text-red-500 text-sm mt-1">{error}</p>}
           </div>
 
-          <div className="mt-4 space-y-2 text-sm">
-            <div ref={captchaContainerRef} />
-            {!captchaReady && !siteKeyMissing && <p className="text-ink/60">Loading security challenge...</p>}
-            {siteKeyMissing && (
-              <p className="text-xs text-red-500">Turnstile site key missing. Please set NEXT_PUBLIC_TURNSTILE_SITE_KEY.</p>
-            )}
-            {captchaError && <p className="text-xs text-red-500">{captchaError}</p>}
+          <div>
+            <label htmlFor="timeline" className="block text-sm font-semibold text-heading mb-2">
+              Timeline *
+            </label>
+            <input
+              type="text"
+              id="timeline"
+              value={formState.timeline}
+              onChange={(e) => handleChange("timeline")(e)}
+              placeholder="e.g., 45 days, 3 months, flexible"
+              className="w-full rounded-full border border-outline/60 bg-panel px-4 py-2.5 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none"
+              required
+            />
+            {error && error.includes("Timeline") && <p className="text-red-500 text-sm mt-1">{error}</p>}
           </div>
+
+          <div>
+            <label htmlFor="details" className="block text-sm font-semibold text-heading mb-2">
+              Project Details *
+            </label>
+            <textarea
+              id="details"
+              value={formState.details}
+              onChange={(e) => handleChange("details")(e)}
+              rows={6}
+              placeholder="Tell us about your current property, desired replacement property types, budget, and any specific requirements..."
+              className="w-full rounded-2xl border border-outline/60 bg-secondary/30 p-3 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none resize-vertical"
+              required
+            />
+            {error && error.includes("details") && <p className="text-red-500 text-sm mt-1">{error}</p>}
+          </div>
+
+          {TURNSTILE_SITE_KEY && (
+            <div className="mt-4 flex justify-center">
+              <div ref={captchaContainerRef} className="min-h-[78px]" />
+            </div>
+          )}
+          {siteKeyMissing && (
+            <p className="text-xs text-red-500 mt-2">Turnstile site key missing. Please set NEXT_PUBLIC_TURNSTILE_SITE_KEY.</p>
+          )}
 
           {error && <p className="text-sm text-red-500">{error}</p>}
 
           <button
             type="submit"
             className="w-full rounded-full bg-gold px-6 py-3 text-sm font-semibold uppercase tracking-[0.32em] text-ink transition hover:-translate-y-0.5 hover:shadow-gold disabled:cursor-not-allowed disabled:opacity-60"
-            disabled={status === "submitting" || !captchaToken || siteKeyMissing || !captchaReady}
+            disabled={status === "submitting" || (TURNSTILE_SITE_KEY && !turnstileReady) || siteKeyMissing}
           >
-            {status === "submitting" ? "Sending..." : "Start My Exchange"}
+            {status === "submitting" ? "Sending..." : "Send Message"}
           </button>
 
           {status === "success" && (
@@ -330,33 +495,4 @@ export default function ContactForm(props: ContactFormProps) {
   );
 }
 
-type InputFieldProps = {
-  id: string;
-  label: string;
-  placeholder?: string;
-  value: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  type?: React.HTMLInputTypeAttribute;
-  required?: boolean;
-};
-
-function InputField({ id, label, placeholder, value, onChange, type = "text", required }: InputFieldProps) {
-  return (
-    <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="text-sm font-semibold text-heading">
-        {label} {required && <span className="text-heading/50">(required)</span>}
-      </label>
-      <input
-        id={id}
-        name={id}
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        required={required}
-        className="rounded-full border border-outline/60 bg-panel px-4 py-2.5 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none"
-      />
-    </div>
-  );
-}
 

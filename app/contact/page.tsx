@@ -14,7 +14,7 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 export default function ContactPage() {
-  const mapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(`${PRIMARY_CITY}, ${PRIMARY_STATE_ABBR}`)}&output=embed`;
+  const mapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(CONTACT_ADDRESS)}&output=embed`;
   const breadcrumbs = [
     { label: "Home", href: "/" },
     { label: "Contact", href: "/contact" },
@@ -55,7 +55,7 @@ export default function ContactPage() {
                     {CONTACT_EMAIL}
                   </a>
                 </li>
-                <li>Hours: 24 hours a day, 7 days a week.</li>
+                <li>Hours: Monday-Friday: 8am-6pm</li>
               </ul>
             </section>
 
@@ -70,7 +70,7 @@ export default function ContactPage() {
                   allowFullScreen
                   referrerPolicy="no-referrer-when-downgrade"
                   src={mapEmbedUrl}
-                  title={`${PRIMARY_CITY} map`}
+                  title={`Map of ${CONTACT_ADDRESS}`}
                 />
               </div>
             </section>

@@ -28,7 +28,9 @@ import ContactForm from "@/app/contact/contact-form";
 import HomeServiceCollections from "@/components/home/HomeServiceCollections";
 import HomeServiceArea from "@/components/home/HomeServiceArea";
 import ScrollToFormButton from "@/components/home/ScrollToFormButton";
+import RotatingHeroBackground from "@/components/home/RotatingHeroBackground";
 import { getProfessionalServiceSchema } from "@/lib/seo";
+import { getShortServiceName } from "@/lib/service-names";
 
 const toolIcons: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
   "boot-calculator": CalculatorIcon,
@@ -138,6 +140,7 @@ export default function Home() {
     <div className="bg-paper text-ink">
       <main className="space-y-24 pb-24">
         <section className="relative overflow-hidden bg-gradient-to-br from-[#E7E3DD] via-white to-[#F9F9F8] py-24">
+          <RotatingHeroBackground />
           <div className="absolute inset-0">
             <div className="absolute inset-y-0 left-1/2 hidden w-1/2 bg-gradient-to-br from-primary/5 via-transparent to-transparent md:block" />
             <div className="pointer-events-none absolute -top-32 -left-24 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
@@ -204,7 +207,7 @@ export default function Home() {
                       href={service.route}
                       className="inline-flex items-center gap-2 rounded-full border border-outline/60 bg-secondary/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-heading transition hover:border-accent hover:text-primary"
                     >
-                      {service.name}
+                      {getShortServiceName(service.slug)}
                     </Link>
                   ))}
                 </div>

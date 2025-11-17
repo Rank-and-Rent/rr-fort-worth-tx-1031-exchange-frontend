@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { ServiceItem } from "@/data/types";
 import SearchInput from "@/components/search/SearchInput";
+import { getShortServiceName } from "@/lib/service-names";
 
 type Collection = {
   category: string;
@@ -69,7 +70,7 @@ export default function HomeServiceCollections({ collections }: Props) {
                   >
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                       <div>
-                        <p className="text-base font-semibold text-heading">{service.name}</p>
+                        <p className="text-base font-semibold text-heading">{getShortServiceName(service.slug)}</p>
                         <p className="text-sm text-ink/80">{service.short}</p>
                       </div>
                       <Link

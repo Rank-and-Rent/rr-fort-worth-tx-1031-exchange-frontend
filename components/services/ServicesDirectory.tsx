@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { ServiceItem } from "@/data/types";
 import SearchInput from "@/components/search/SearchInput";
+import { getShortServiceName } from "@/lib/service-names";
 
 type Props = {
   services: ServiceItem[];
@@ -51,7 +52,7 @@ export default function ServicesDirectory({ services }: Props) {
           {results.map((service) => (
             <article key={service.slug} className="rounded-2xl border border-outline/60 bg-panel p-5">
               <p className="text-xs uppercase tracking-[0.35em] text-ink/60">{service.category || "Service"}</p>
-              <h3 className="mt-2 text-xl font-semibold text-heading">{service.name}</h3>
+              <h3 className="mt-2 text-xl font-semibold text-heading">{getShortServiceName(service.slug)}</h3>
               <p className="mt-2 text-sm text-ink/80">{service.short}</p>
               <div className="mt-4 flex flex-wrap gap-3">
                 <Link href={service.route} className="text-xs font-semibold uppercase tracking-[0.35em] text-primary hover:underline">

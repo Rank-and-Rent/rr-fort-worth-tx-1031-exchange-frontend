@@ -1,6 +1,7 @@
 import Link from "next/link";
 import site from "@/content/site.json";
-import { resources, toolsData } from "@/data";
+import { resources, toolsData, servicesData, locationsData } from "@/data";
+import type { LocationItem } from "@/data/types";
 import {
   COMPANY_NAME,
   CONTACT_ADDRESS,
@@ -11,6 +12,7 @@ import {
   PRIMARY_STATE_ABBR,
   SITE_URL,
 } from "@/lib/constants";
+import { getShortServiceName } from "@/lib/service-names";
 
 const sitemapLinks = [
   { label: "Services", href: "/services" },
@@ -26,97 +28,201 @@ const sitemapLinks = [
 
 const complianceLinks = resources.slice(0, 4);
 
+// Sort locations: Fort Worth first, then other cities, then districts/suburbs
+function sortLocations(locations: LocationItem[]): LocationItem[] {
+  const primaryCitySlug = PRIMARY_CITY.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  
+  return [...locations].sort((a, b) => {
+    // Fort Worth first
+    if (a.slug === primaryCitySlug) return -1;
+    if (b.slug === primaryCitySlug) return 1;
+    
+    // Then cities
+    const aIsCity = a.type === "city";
+    const bIsCity = b.type === "city";
+    if (aIsCity && !bIsCity) return -1;
+    if (!aIsCity && bIsCity) return 1;
+    
+    // Then districts
+    const aIsDistrict = a.type === "district";
+    const bIsDistrict = b.type === "district";
+    if (aIsDistrict && !bIsDistrict) return -1;
+    if (!aIsDistrict && bIsDistrict) return 1;
+    
+    // Then suburbs
+    const aIsSuburb = a.type === "suburb";
+    const bIsSuburb = b.type === "suburb";
+    if (aIsSuburb && !bIsSuburb) return -1;
+    if (!aIsSuburb && bIsSuburb) return 1;
+    
+    // Alphabetical for same type
+    return a.name.localeCompare(b.name);
+  });
+}
+
 export default function Footer() {
-  const mapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(`${PRIMARY_CITY}, ${PRIMARY_STATE_ABBR}`)}&output=embed`;
+  const mapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(CONTACT_ADDRESS)}&output=embed`;
+  const sortedLocations = sortLocations(locationsData);
+  
+  // Top locations: Fort Worth + first 7 cities/districts
+  const topLocations = sortedLocations.slice(0, 8);
+  const remainingLocations = sortedLocations.slice(8);
 
   return (
     <footer className="mt-24 bg-primary text-primaryfg">
-      <div className="mx-auto flex max-w-7xl flex-col gap-16 px-6 py-16 md:px-10">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3 lg:items-start">
-          <section className="space-y-4">
-            <p className="text-xs uppercase tracking-[0.35em] text-primaryfg/70">Fort Worth Exchange Desk</p>
-            <h3 className="text-3xl font-semibold text-white">{COMPANY_NAME}</h3>
+      <div className="mx-auto flex max-w-7xl flex-col gap-12 px-6 py-12 md:px-10">
+        {/* Main content grid */}
+        <div className="grid gap-8 lg:grid-cols-12">
+          {/* Company info - takes 3 columns */}
+          <section className="space-y-4 lg:col-span-3">
+            <p className="text-xs uppercase tracking-[0.35em] text-primaryfg/70">Best 1031 Exchange in Fort Worth, TX</p>
+            <h3 className="text-2xl font-semibold text-white">{COMPANY_NAME}</h3>
             <p className="text-sm text-primaryfg/80">
               {CONTACT_ADDRESS}
               <br />
               Serving Fort Worth, Dallas, and investors across Texas.
+              <br />
+              <span className="text-xs">We help Fort Worth investors find replacement properties across all 50 states.</span>
             </p>
-            <div className="space-y-2 text-sm text-primaryfg/80">
-              <p>Hours: 24 hours a day, 7 days a week.</p>
-              <p>HQ: {site.address}</p>
+            <div className="space-y-1 text-xs text-primaryfg/80">
+              <p>Hours: Monday-Friday: 8am-6pm</p>
             </div>
-            <div className="flex flex-wrap gap-3 pt-4">
+            <div className="flex flex-wrap gap-2 pt-2">
               <a
                 href={`tel:${CONTACT_PHONE_DIGITS}`}
-                className="inline-flex items-center justify-center rounded-full bg-gold px-5 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-ink transition hover:-translate-y-0.5 hover:shadow-gold"
+                className="inline-flex items-center justify-center rounded-full bg-gold px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-ink transition hover:-translate-y-0.5 hover:shadow-gold"
               >
                 Call {CONTACT_PHONE}
               </a>
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center rounded-full border border-gold px-5 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-gold transition hover:-translate-y-0.5 hover:bg-gold/10"
+                className="inline-flex items-center justify-center rounded-full border border-gold px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-gold transition hover:-translate-y-0.5 hover:bg-gold/10"
               >
                 Contact
               </Link>
             </div>
           </section>
 
-          <section className="space-y-4 lg:border-l lg:border-white/10 lg:pl-10">
-            <h4 className="text-lg font-semibold text-white">Quick links</h4>
-            <nav className="grid grid-cols-2 gap-2 text-sm">
+          {/* Services - takes 5 columns */}
+          <section className="space-y-4 lg:col-span-5 lg:border-l lg:border-white/10 lg:pl-8">
+            <h4 className="text-base font-semibold text-white">All Services</h4>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-xs">
+              {servicesData.map((service) => (
+                <Link
+                  key={service.slug}
+                  href={service.route}
+                  className="text-primaryfg/80 transition hover:text-white whitespace-nowrap overflow-hidden text-ellipsis"
+                  title={service.name}
+                >
+                  {getShortServiceName(service.slug)}
+                </Link>
+              ))}
+            </div>
+            <Link
+              href="/services"
+              className="mt-2 inline-block text-xs font-semibold uppercase tracking-[0.32em] text-gold transition hover:text-white"
+            >
+              View all services →
+            </Link>
+          </section>
+
+          {/* Locations - takes 4 columns */}
+          <section className="space-y-4 lg:col-span-4 lg:border-l lg:border-white/10 lg:pl-8">
+            <h4 className="text-base font-semibold text-white">Locations</h4>
+            
+            {/* Top locations - always visible */}
+            <div className="space-y-1.5">
+              {topLocations.map((location) => (
+                <Link
+                  key={location.slug}
+                  href={location.route}
+                  className="block text-xs text-primaryfg/80 transition hover:text-white"
+                >
+                  {location.name}
+                </Link>
+              ))}
+            </div>
+
+            {/* Scrollable remaining locations */}
+            {remainingLocations.length > 0 && (
+              <div className="relative">
+                <div className="max-h-32 overflow-y-auto pr-2 space-y-1.5" style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(183, 147, 73, 0.3) transparent' }}>
+                  {remainingLocations.map((location) => (
+                    <Link
+                      key={location.slug}
+                      href={location.route}
+                      className="block text-xs text-primaryfg/70 transition hover:text-white"
+                    >
+                      {location.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            <Link
+              href="/locations"
+              className="mt-2 inline-block text-xs font-semibold uppercase tracking-[0.32em] text-gold transition hover:text-white"
+            >
+              View all locations →
+            </Link>
+          </section>
+        </div>
+
+        {/* Secondary links and tools */}
+        <div className="grid gap-6 border-t border-white/10 pt-8 lg:grid-cols-3">
+          <section className="space-y-3">
+            <h5 className="text-sm font-semibold text-white">Quick links</h5>
+            <nav className="grid grid-cols-2 gap-1.5 text-xs">
               {sitemapLinks.map((link) => (
                 <Link key={link.href} href={link.href} className="text-primaryfg/80 transition hover:text-white">
                   {link.label}
                 </Link>
               ))}
             </nav>
-            <div className="pt-4">
-              <h5 className="text-sm font-semibold uppercase tracking-[0.28em] text-gold">Tools</h5>
-              <div className="mt-3 grid gap-2 text-sm">
-                {toolsData.slice(0, 4).map((tool) => (
-                  <Link key={tool.slug} href={tool.route} className="text-primaryfg/80 transition hover:text-white">
-                    {tool.name}
-                  </Link>
-                ))}
-                <Link href="/tools" className="text-xs font-semibold uppercase tracking-[0.32em] text-gold transition hover:text-white">
-                  View all tools
+          </section>
+
+          <section className="space-y-3">
+            <h5 className="text-sm font-semibold text-white">Tools</h5>
+            <div className="grid gap-1.5 text-xs">
+              {toolsData.slice(0, 4).map((tool) => (
+                <Link key={tool.slug} href={tool.route} className="text-primaryfg/80 transition hover:text-white">
+                  {tool.name}
                 </Link>
-              </div>
+              ))}
+              <Link href="/tools" className="text-xs font-semibold uppercase tracking-[0.32em] text-gold transition hover:text-white">
+                View all tools →
+              </Link>
             </div>
           </section>
 
-          <section className="space-y-4 lg:border-l lg:border-white/10 lg:pl-10">
-            <h4 className="text-lg font-semibold text-white">Compliance & IRS guidance</h4>
-            <p className="text-sm text-primaryfg/80">
-              Educational content only. Coordinate with your Qualified Intermediary, CPA, and attorney for transaction-specific advice.
-            </p>
-            <div className="grid gap-2 text-sm">
+          <section className="space-y-3">
+            <h5 className="text-sm font-semibold text-white">Compliance & IRS guidance</h5>
+            <div className="grid gap-1.5 text-xs">
               {complianceLinks.map((link) => (
                 <a
                   key={link.key}
                   href={link.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-primaryfg/80 transition hover:text-white"
+                  className="inline-flex items-center gap-1.5 text-primaryfg/80 transition hover:text-white"
                 >
-                  <span className="h-1.5 w-1.5 rounded-full bg-gold" aria-hidden />
+                  <span className="h-1 w-1 rounded-full bg-gold" aria-hidden />
                   {link.label}
                 </a>
               ))}
             </div>
-            <div className="space-y-2 text-xs text-primaryfg/70">
-              <p>“A 1031 exchange defers federal and Texas income tax on qualifying real property. Texas does not levy a state income tax, but transfer and recording fees may apply.”</p>
-              <p>Secure uploads and attorney review available on request.</p>
-            </div>
           </section>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[2fr_1fr] lg:items-start">
-          <div className="space-y-2 text-sm text-primaryfg/75">
+        {/* Map and disclaimer */}
+        <div className="grid gap-6 border-t border-white/10 pt-8 lg:grid-cols-[2fr_1fr] lg:items-start">
+          <div className="space-y-2 text-xs text-primaryfg/75">
             <p>This platform connects investors with Fort Worth 1031 exchange specialists for property identification, timeline coordination, and reporting support.</p>
             <p>We are not a Qualified Intermediary, law firm, broker, or CPA. Verify strategy with your advisory team before executing an exchange.</p>
+            <p className="pt-2 text-primaryfg/70">“A 1031 exchange defers federal and Texas income tax on qualifying real property. Texas does not levy a state income tax, but transfer and recording fees may apply.”</p>
           </div>
-          <div className="h-56 overflow-hidden rounded-2xl border border-white/15 shadow-[0_12px_24px_rgba(10,16,28,0.35)]">
+          <div className="h-48 overflow-hidden rounded-2xl border border-white/15 shadow-[0_12px_24px_rgba(10,16,28,0.35)]">
             <iframe
               width="100%"
               height="100%"
@@ -130,6 +236,7 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Copyright */}
         <div className="flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-primaryfg/60 md:flex-row md:items-center md:justify-between">
           <p>&copy; {new Date().getFullYear()} {COMPANY_NAME}. All rights reserved.</p>
           <p>

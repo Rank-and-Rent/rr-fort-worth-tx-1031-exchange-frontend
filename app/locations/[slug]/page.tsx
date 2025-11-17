@@ -10,6 +10,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import { createPageMetadata, getBreadcrumbJsonLd } from "@/lib/seo";
 import { PRIMARY_CITY, PRIMARY_STATE_ABBR } from "@/lib/constants";
 import { getLocationBatchData } from "@/lib/batch-data";
+import { getShortServiceName } from "@/lib/service-names";
 
 type Params = Promise<{ slug: string }> | { slug: string };
 
@@ -120,7 +121,7 @@ export default async function LocationPage({ params }: { params: Params }) {
               {featuredServices.map((service) => (
                 <article key={service.slug} className="rounded-xl border border-outline/60 bg-secondary/30 p-4">
                   <p className="text-xs uppercase tracking-[0.35em] text-ink/60">{service.category || "Service"}</p>
-                  <h3 className="mt-2 text-lg font-semibold text-heading">{service.name}</h3>
+                  <h3 className="mt-2 text-lg font-semibold text-heading">{getShortServiceName(service.slug)}</h3>
                   <p className="mt-1 text-sm text-ink/80">{service.short}</p>
                   <Link href={service.route} className="mt-3 inline-flex text-xs uppercase tracking-[0.35em] text-primary">
                     View details

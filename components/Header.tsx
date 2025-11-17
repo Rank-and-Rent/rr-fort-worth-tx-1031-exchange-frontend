@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import clsx from "clsx";
 import site from "@/content/site.json";
 import { locationsData, servicesData } from "@/data";
@@ -22,6 +23,7 @@ export default function Header() {
   const servicesPreview = servicesData.slice(0, 8);
   const locationPreview = locationsData.slice(0, 8);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const headerRef = useRef<HTMLElement | null>(null);
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const cancelCloseTimeout = () => {
@@ -45,8 +47,20 @@ export default function Header() {
 
   useEffect(() => {
     function handleClick(event: MouseEvent) {
-      if (!dropdownRef.current) return;
-      if (!dropdownRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (!headerRef.current) return;
+      
+      // Don't close if clicking inside the header (mobile menu button or nav)
+      if (headerRef.current.contains(target)) {
+        return;
+      }
+      
+      // Close mobile menu and dropdowns when clicking outside
+      if (mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+      
+      if (dropdownRef.current && !dropdownRef.current.contains(target)) {
         cancelCloseTimeout();
         setOpenDropdown(null);
       }
@@ -57,19 +71,30 @@ export default function Header() {
       document.removeEventListener("click", handleClick);
       cancelCloseTimeout();
     };
-  }, []);
+  }, [mobileMenuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-outline/40 bg-paper/95 shadow-sm backdrop-blur">
-      <div className="container flex items-center justify-between gap-4 py-4">
-        <Link href="/" className="text-lg font-semibold tracking-wide text-heading">
-          {site.company}
+    <header ref={headerRef} className="sticky top-0 z-50 border-b border-outline/40 bg-paper/95 shadow-sm backdrop-blur">
+      <div className="container mx-auto flex items-center justify-between gap-6 px-4 py-4 md:px-6 lg:px-8">
+        <Link href="/" className="flex items-center shrink-0">
+          <Image
+            src="/1031-exchange-fort-worth-tx-logo.png"
+            alt={site.company}
+            width={200}
+            height={60}
+            className="h-16 w-auto object-contain md:h-20"
+            priority
+            unoptimized
+          />
         </Link>
 
         <button
           type="button"
           className="rounded border border-outline px-3 py-1 text-sm text-heading lg:hidden"
-          onClick={() => setMobileMenuOpen((prev) => !prev)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setMobileMenuOpen((prev) => !prev);
+          }}
           aria-expanded={mobileMenuOpen}
           aria-controls="primary-navigation"
         >
@@ -83,7 +108,7 @@ export default function Header() {
             mobileMenuOpen ? "block" : "hidden lg:block"
           )}
         >
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-6">
             <DropdownTrigger
               label="Services"
               open={openDropdown === "services"}

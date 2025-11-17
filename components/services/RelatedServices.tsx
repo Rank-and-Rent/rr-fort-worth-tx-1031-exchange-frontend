@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { ServiceItem } from "@/data/types";
 import SearchInput from "@/components/search/SearchInput";
+import { getShortServiceName } from "@/lib/service-names";
 
 type Props = {
   services: ServiceItem[];
@@ -45,7 +46,7 @@ export default function RelatedServices({ services, currentService }: Props) {
         <div className="grid gap-4 md:grid-cols-2">
           {filtered.map((service) => (
             <article key={service.slug} className="rounded-xl border border-outline/60 bg-secondary/30 p-4">
-              <h3 className="text-lg font-semibold text-heading">{service.name}</h3>
+              <h3 className="text-lg font-semibold text-heading">{getShortServiceName(service.slug)}</h3>
               <p className="mt-2 text-sm text-ink/80">{service.short}</p>
               <Link href={service.route} className="mt-3 inline-flex text-xs uppercase tracking-[0.35em] text-primary">
                 View service

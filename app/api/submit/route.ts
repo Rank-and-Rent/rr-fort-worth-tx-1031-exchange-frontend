@@ -114,10 +114,12 @@ export async function POST(request: NextRequest) {
       phone: body.phone ? String(body.phone).replace(/\D/g, '') : undefined,
       phone_plain: body.phone ? String(body.phone).replace(/\D/g, '') : undefined,
       projectType: String(body.projectType || body.service || '1031 Exchange Project'),
-      address: body.company ? String(body.company) : undefined,
-      city: 'Fort Worth',
+      property: body.property ? String(body.property) : undefined,
+      estimatedCloseDate: body.estimatedCloseDate ? String(body.estimatedCloseDate) : undefined,
+      city: body.city ? String(body.city) : undefined,
+      company: body.company ? String(body.company) : undefined,
       timeline: body.timeline ? String(body.timeline) : undefined,
-      projectDescription: body.projectDetails ? String(body.projectDetails) : body.message ? String(body.message) : body.details ? String(body.details) : body.info ? String(body.info) : undefined,
+      message: body.message ? String(body.message) : (body.details ? String(body.details) : undefined),
     }
 
     // Add submitted_date to brand data

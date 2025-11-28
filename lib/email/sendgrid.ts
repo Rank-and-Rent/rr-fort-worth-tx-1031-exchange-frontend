@@ -20,10 +20,12 @@ type Lead = {
   phone?: string;
   phone_plain?: string;
   projectType: string;
-  projectDescription?: string;
-  timeline?: string;
-  address?: string;
+  property?: string;
+  estimatedCloseDate?: string;
   city?: string;
+  company?: string;
+  timeline?: string;
+  message?: string;
 };
 
 type BrandData = {
@@ -42,6 +44,9 @@ type BrandData = {
   text_faint?: string;
   border_color?: string;
   card_header_bg?: string;
+  card_header_text?: string;
+  header_text_color?: string;
+  footer_text_color?: string;
   hero_title?: string;
   hero_subtitle?: string;
   details_title?: string;

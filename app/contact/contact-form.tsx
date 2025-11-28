@@ -70,6 +70,9 @@ type FormState = {
   email: string;
   phone: string;
   projectType: string;
+  property: string;
+  estimatedCloseDate: string;
+  city: string;
   timeline: string;
   details: string;
 };
@@ -80,6 +83,9 @@ const defaultState: FormState = {
   email: "",
   phone: "",
   projectType: "",
+  property: "",
+  estimatedCloseDate: "",
+  city: "",
   timeline: "",
   details: "",
 };
@@ -206,8 +212,7 @@ function ContactFormInner({
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email)) return "Valid email required";
     if (!formState.phone.trim()) return "Phone is required";
     if (!formState.projectType) return "Project type is required";
-    if (!formState.timeline.trim()) return "Timeline is required";
-    if (!formState.details.trim()) return "Please provide details about your project";
+    // property, estimatedCloseDate, city, timeline, and details are all optional
     if (TURNSTILE_SITE_KEY && (!turnstileReady || !window.turnstile || !turnstileId)) {
       return "Please complete the security verification.";
     }
@@ -272,6 +277,9 @@ function ContactFormInner({
           email: formState.email,
           phone: phoneDigits,
           projectType: formState.projectType,
+          property: formState.property,
+          estimatedCloseDate: formState.estimatedCloseDate,
+          city: formState.city,
           timeline: formState.timeline,
           details: formState.details,
           'cf-turnstile-response': turnstileToken,
@@ -406,36 +414,74 @@ function ContactFormInner({
             {error && error.includes("Project type") && <p className="text-red-500 text-sm mt-1">{error}</p>}
           </div>
 
+          <div className="grid gap-4 md:grid-cols-2">
+            <div>
+              <label htmlFor="property" className="block text-sm font-semibold text-heading mb-2">
+                Property Being Sold
+              </label>
+              <input
+                type="text"
+                id="property"
+                value={formState.property}
+                onChange={(e) => handleChange("property")(e)}
+                placeholder="Include property type, location, and estimated value (optional)"
+                className="w-full rounded-full border border-outline/60 bg-panel px-4 py-2.5 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none"
+              />
+            </div>
+            <div>
+              <label htmlFor="estimatedCloseDate" className="block text-sm font-semibold text-heading mb-2">
+                Estimated Close Date
+              </label>
+              <input
+                type="date"
+                id="estimatedCloseDate"
+                value={formState.estimatedCloseDate}
+                onChange={(e) => handleChange("estimatedCloseDate")(e)}
+                className="w-full rounded-full border border-outline/60 bg-panel px-4 py-2.5 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="city" className="block text-sm font-semibold text-heading mb-2">
+              City
+            </label>
+            <input
+              type="text"
+              id="city"
+              value={formState.city}
+              onChange={(e) => handleChange("city")(e)}
+              placeholder="Primary metro or submarket (optional)"
+              className="w-full rounded-full border border-outline/60 bg-panel px-4 py-2.5 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none"
+            />
+          </div>
+
           <div>
             <label htmlFor="timeline" className="block text-sm font-semibold text-heading mb-2">
-              Timeline *
+              Timeline
             </label>
             <input
               type="text"
               id="timeline"
               value={formState.timeline}
               onChange={(e) => handleChange("timeline")(e)}
-              placeholder="e.g., 45 days, 3 months, flexible"
+              placeholder="e.g., 45 days, 3 months, flexible (optional)"
               className="w-full rounded-full border border-outline/60 bg-panel px-4 py-2.5 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none"
-              required
             />
-            {error && error.includes("Timeline") && <p className="text-red-500 text-sm mt-1">{error}</p>}
           </div>
 
           <div>
             <label htmlFor="details" className="block text-sm font-semibold text-heading mb-2">
-              Project Details *
+              Message
             </label>
             <textarea
               id="details"
               value={formState.details}
               onChange={(e) => handleChange("details")(e)}
               rows={6}
-              placeholder="Tell us about your current property, desired replacement property types, budget, and any specific requirements..."
+              placeholder="Outline goals, replacement preferences, or coordination needs (optional)"
               className="w-full rounded-2xl border border-outline/60 bg-secondary/30 p-3 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none resize-vertical"
-              required
             />
-            {error && error.includes("details") && <p className="text-red-500 text-sm mt-1">{error}</p>}
           </div>
 
           {TURNSTILE_SITE_KEY && (

@@ -1,6 +1,6 @@
 module.exports = {
-  paper: "#F9F9F8",
-  ink: "#1A1A1A",
+  base: "#F9F9F8",
+  text: "#1A1A1A",
   heading: "#15223B",
   primaryBg: "#15223B",
   primaryFg: "#F9F9F8",

@@ -39,9 +39,9 @@ export default function HomeServiceCollections({ collections }: Props) {
       />
 
       {filtered.length === 0 ? (
-        <div className="rounded-3xl border border-outline/60 bg-secondary/40 p-6 text-center text-sm text-heading">
-          We can help with "{query}". {" "}
-          <Link href={`/contact?projectType=${encodeURIComponent(query)}`} className="text-primary underline">
+        <div className="border border-outline/40 bg-panel p-6 text-center text-sm text-primary">
+          We can help with &quot;{query}&quot;.{" "}
+          <Link href={`/contact?projectType=${encodeURIComponent(query)}`} className="text-accent underline">
             Contact us
           </Link>{" "}
           and we will route the request.
@@ -51,14 +51,14 @@ export default function HomeServiceCollections({ collections }: Props) {
           {filtered.map((group) => (
             <article
               key={group.category}
-              className="flex flex-col gap-5 rounded-3xl border border-outline/60 bg-panel p-6 shadow-[0_22px_48px_rgba(21,34,59,0.08)]"
+              className="malibu-card flex flex-col gap-5 border border-outline/40 bg-panel p-6"
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.32em] text-heading/60">{group.category}</p>
-                  <h3 className="mt-2 text-xl font-semibold text-heading">{group.category} Support</h3>
+                  <p className="text-xs uppercase tracking-[0.15em] text-accent">{group.category}</p>
+                  <h3 className="mt-2 font-serif text-xl font-normal text-primary">{group.category} Support</h3>
                 </div>
-                <span className="rounded-full border border-outline/60 px-3 py-1 text-xs text-heading/60">
+                <span className="border border-outline/40 px-3 py-1 text-xs text-ink/60">
                   {group.items.length} core
                 </span>
               </div>
@@ -66,18 +66,18 @@ export default function HomeServiceCollections({ collections }: Props) {
                 {group.items.map((service) => (
                   <li
                     key={service.slug}
-                    className="rounded-2xl border border-outline/50 bg-secondary/40 p-4 transition hover:border-accent hover:bg-secondary/70"
+                    className="border-b border-outline/30 pb-3 transition hover:border-primary"
                   >
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                       <div>
-                        <p className="text-base font-semibold text-heading">{getShortServiceName(service.slug)}</p>
-                        <p className="text-sm text-ink/80">{service.short}</p>
+                        <p className="text-sm font-medium text-primary">{getShortServiceName(service.slug)}</p>
+                        <p className="text-xs text-ink/60">{service.short}</p>
                       </div>
                       <Link
                         href={service.route}
-                        className="text-xs font-semibold uppercase tracking-[0.32em] text-primary hover:text-accent"
+                        className="text-xs font-medium tracking-[0.1em] text-accent hover:text-primary"
                       >
-                        Details
+                        DETAILS
                       </Link>
                     </div>
                   </li>
@@ -90,4 +90,3 @@ export default function HomeServiceCollections({ collections }: Props) {
     </div>
   );
 }
-

@@ -13,6 +13,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useState } from "react";
 import site from "@/content/site.json";
 import {
   inventoryCategories,
@@ -122,9 +123,9 @@ export default function Home() {
   }, []);
 
   const coverageCities = locationsData.filter((location) => location.type === "city");
-  const featuredMarkets = coverageCities.slice(0, 8);
+  const featuredMarkets = coverageCities.slice(0, 6);
   const coverageHighlights = coverageCities.slice(0, 5).map((city) => city.name);
-  const propertyShowcase = propertyTypesData.slice(0, 8);
+  const propertyShowcase = propertyTypesData.slice(0, 6);
 
   const categoryOrder = ["Timelines", "Structures", "Execution", "Property Paths", "Tax", "Reporting", "Education"];
   const serviceCollections = categoryOrder
@@ -136,261 +137,77 @@ export default function Home() {
 
   const servicesGrid = servicesData.slice(0, 6);
 
+  // Carousel state for property showcase
+  const [carouselIndex, setCarouselIndex] = useState(0);
+  const itemsPerView = 3;
+  const maxIndex = Math.max(0, propertyShowcase.length - itemsPerView);
+
+  const nextSlide = () => {
+    setCarouselIndex((prev) => Math.min(prev + 1, maxIndex));
+  };
+
+  const prevSlide = () => {
+    setCarouselIndex((prev) => Math.max(prev - 1, 0));
+  };
+
   return (
     <div className="bg-paper text-ink">
-      <main className="space-y-24 pb-24">
-        <section className="relative overflow-hidden bg-gradient-to-br from-[#E7E3DD] via-white to-[#F9F9F8] py-24">
+      <main>
+        {/* Hero Section - Malibu Life Style */}
+        <section className="relative min-h-screen overflow-hidden">
           <RotatingHeroBackground />
-          <div className="absolute inset-0">
-            <div className="absolute inset-y-0 left-1/2 hidden w-1/2 bg-gradient-to-br from-primary/5 via-transparent to-transparent md:block" />
-            <div className="pointer-events-none absolute -top-32 -left-24 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
-            <div className="pointer-events-none absolute bottom-0 right-0 h-64 w-64 rounded-full bg-gold/20 blur-3xl" />
-          </div>
-
-          <div className="relative mx-auto grid max-w-7xl items-start gap-12 px-6 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] md:px-10">
-            <div className="space-y-10">
-              <span className="inline-flex items-center rounded-full bg-secondary px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-secondaryfg">
-                Fort Worth Financial Precision
-              </span>
-              <h1 className="max-w-2xl font-serif text-4xl font-bold text-heading md:text-5xl lg:text-6xl">
-                Fast, compliant 1031 exchanges rooted in Fort Worth and deployed nationwide.
+          
+          {/* Hero Content */}
+          <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="max-w-4xl"
+            >
+              <span className="script-the text-5xl md:text-7xl">the</span>
+              <h1 className="mt-2 font-serif text-5xl font-normal tracking-wide text-primary md:text-7xl lg:text-8xl">
+                FORT WORTH
               </h1>
-              <div className="space-y-4 text-lg leading-relaxed text-ink/80 max-w-2xl">
-                <p>
-                  We source single tenant NNN retail, shopping centers, ground leases, and zero cash flow options so you can
-                  defer gains without inheriting daily management responsibilities.
-                </p>
-                <p>
-                  Our team synchronizes your 45/180 calendar with creditworthy inventory in convenience, QSR, pharmacy, medical,
-                  and essential retail to keep deadlines and diligence on track.
-                </p>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row">
+              <h2 className="font-serif text-4xl font-normal tracking-wide text-accent md:text-6xl lg:text-7xl">
+                EXCHANGE
+              </h2>
+              
+              <p className="mx-auto mt-8 max-w-2xl text-base text-ink/80 md:text-lg">
+                Fast, compliant 1031 exchanges rooted in Fort Worth and deployed nationwide.
+                We source single tenant NNN retail, shopping centers, ground leases, and zero cash flow options.
+              </p>
+              
+              <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                 <ScrollToFormButton
                   targetId="home-contact-form"
-                  className="inline-flex items-center justify-center rounded-full bg-gold px-8 py-3 text-xs font-semibold uppercase tracking-[0.32em] text-ink transition hover:-translate-y-0.5 hover:shadow-gold"
+                  className="malibu-btn-outline"
                 >
-                  Start My Exchange
+                  START MY EXCHANGE
                 </ScrollToFormButton>
                 <a
                   href={`tel:${site.phoneDigits}`}
-                  className="inline-flex items-center justify-center rounded-full border border-primary px-8 py-3 text-xs font-semibold uppercase tracking-[0.32em] text-primary transition hover:-translate-y-0.5 hover:bg-primary/10"
+                  className="text-xs font-medium tracking-[0.15em] text-primary transition hover:text-accent"
                 >
-                  Call {site.phone}
+                  CALL {site.phone}
                 </a>
               </div>
-              <p className="text-sm font-semibold uppercase tracking-[0.4em] text-primary/70">
-                45 Day identification. 180 Day closing. Every deadline met.
-              </p>
-
-              <div className="grid gap-6 rounded-3xl border border-outline/60 bg-panel/90 p-6 shadow-[0_18px_44px_rgba(21,34,59,0.12)] md:grid-cols-3">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.35em] text-heading/60">Local HQ</p>
-                  <p className="mt-2 text-xl font-semibold text-heading">{site.address}</p>
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-[0.35em] text-heading/60">Metro Coverage</p>
-                  <p className="mt-2 text-xl font-semibold text-heading">{coverageCities.length}+ Texas markets</p>
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-[0.35em] text-heading/60">Property Scope</p>
-                  <p className="mt-2 text-xl font-semibold text-heading">Single tenant retail & NNN nationwide</p>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <p className="text-xs uppercase tracking-[0.32em] text-heading/60">Exchange moves we run daily</p>
-                <div className="flex flex-wrap gap-3">
-                  {heroHighlights.map((service) => (
-                    <Link
-                      key={service.slug}
-                      href={service.route}
-                      className="inline-flex items-center gap-2 rounded-full border border-outline/60 bg-secondary/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-heading transition hover:border-accent hover:text-primary"
-                    >
-                      {getShortServiceName(service.slug)}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="relative">
-              <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-primary/10 to-transparent" aria-hidden />
-              <div className="relative">
-                <ContactForm
-                  formId="home-contact-form"
-                  variant="compact"
-                  heading="Request 1031 intake"
-                  description="Tell us about your relinquished asset and replacement timeline. We respond the same business day."
-                />
-              </div>
-            </div>
+            </motion.div>
           </div>
         </section>
 
-        <section className="py-24">
-          <div className="mx-auto max-w-7xl space-y-12 px-6 md:px-10">
-            <header className="max-w-3xl space-y-4">
-              <p className="text-xs uppercase tracking-[0.35em] text-primary/70">Authority from the first scroll</p>
-              <h2 className="font-serif text-3xl font-semibold text-heading md:text-4xl">
-                Trusted Fort Worth professionals guiding compliant, deadline-driven exchanges.
-              </h2>
-              <p className="text-base text-ink/80">
-                Investors expect structure, timeline accountability, and documented compliance on day one. These pillars anchor
-                every engagement we lead.
-              </p>
-            </header>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-              {trustSignals.map((signal) => {
-                const Icon = signal.icon;
-                return (
-                  <div
-                    key={signal.title}
-                    className="rounded-3xl border border-outline/60 bg-panel p-6 shadow-[0_18px_44px_rgba(21,34,59,0.08)]"
-                  >
-                    <Icon className="h-8 w-8 text-accent" aria-hidden />
-                    <h3 className="mt-4 text-lg font-semibold text-heading">{signal.title}</h3>
-                    <p className="mt-2 text-sm text-ink/70">{signal.description}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-secondary py-24">
-          <div className="mx-auto max-w-7xl space-y-12 px-6 md:px-10">
-            <header className="max-w-3xl space-y-4">
-              <p className="text-xs uppercase tracking-[0.35em] text-primary">Why Fort Worth investors choose us</p>
-              <h2 className="font-serif text-3xl font-semibold text-heading md:text-4xl">
-                Structured services tuned for 45/180 discipline, build-to-suit, and turnkey NNN holds.
-              </h2>
-              <p className="text-base text-secondaryfg/80">
-                Every service listed below lives in our playbook so investors can move from sale proceeds to stable single
-                tenant income without missing IRS deadlines. Tap into timelines, construction, execution, tax, and education
-                support.
-              </p>
-            </header>
-
-            <div className="grid gap-6 md:grid-cols-3">
-              {whyCards.map((card) => {
-                const Icon = card.icon;
-                return (
-                  <div
-                    key={card.title}
-                    className="rounded-3xl border border-outline/60 bg-panel p-6 shadow-[0_22px_48px_rgba(21,34,59,0.08)]"
-                  >
-                    <Icon className="h-8 w-8 text-accent" aria-hidden />
-                    <h3 className="mt-4 text-xl font-semibold text-heading">{card.title}</h3>
-                    <p className="mt-2 text-sm text-ink/75">{card.description}</p>
-                  </div>
-                );
-              })}
-            </div>
-
-            <HomeServiceCollections collections={serviceCollections} />
-          </div>
-        </section>
-
-        <section className="py-24">
-          <div className="mx-auto max-w-7xl space-y-12 px-6 md:px-10">
-            <header className="max-w-3xl space-y-4 text-center md:text-left">
-              <p className="text-xs uppercase tracking-[0.35em] text-primary/70">How a 1031 works</p>
-              <h2 className="font-serif text-3xl font-semibold text-heading md:text-4xl">
-                A transparent 1031 timeline that protects the 45/180 windows and keeps your P&amp;Qs buttoned up.
-              </h2>
-              <p className="text-base text-ink/80">
-                This process braids together exchange consultation, intermediary controls, nationwide sourcing, and reporting
-                so every move is documented for the IRS and lender partners.
-              </p>
-            </header>
-
-            <div className="relative">
-              <div className="hidden h-1 w-full bg-outline/40 md:block" aria-hidden />
-              <div className="grid gap-8 md:grid-cols-3">
-                {timelineSteps.map((step, index) => {
-                  const Icon = step.icon;
-                  return (
-                    <div key={step.title} className="relative flex flex-col gap-4 rounded-3xl border border-outline/60 bg-panel p-6">
-                      <div className="flex items-center gap-3">
-                        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primaryfg">
-                          {index + 1}
-                        </span>
-                        <Icon className="h-6 w-6 text-accent" aria-hidden />
-                      </div>
-                      <h3 className="text-lg font-semibold text-heading">{step.title}</h3>
-                      <p className="text-sm text-ink/75">{step.description}</p>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-primary py-24 text-primaryfg">
-          <div className="mx-auto max-w-7xl space-y-12 px-6 md:px-10">
-            <header className="max-w-3xl space-y-4">
-              <p className="text-xs uppercase tracking-[0.35em] text-primaryfg/70">Core services</p>
-              <h2 className="font-serif text-3xl font-semibold md:text-4xl">
-                Advisory, sourcing, and reporting executed with Fort Worth accountability.
-              </h2>
-              <p className="text-base text-primaryfg/80">
-                From forward and reverse exchanges to NNN verification and reporting, these engagements channel the same
-                process discipline we bring to every investor relationship.
-              </p>
-            </header>
-
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {servicesGrid.map((service) => (
-                <Link
-                  key={service.slug}
-                  href={service.route}
-                  className="group flex flex-col gap-4 rounded-3xl border border-white/20 bg-primary/60 p-6 transition hover:-translate-y-1 hover:border-gold hover:shadow-[0_18px_40px_rgba(10,16,28,0.4)]"
-                >
-                  <p className="text-xs uppercase tracking-[0.32em] text-primaryfg/70">{service.category}</p>
-                  <h3 className="text-xl font-semibold text-white">{service.name}</h3>
-                  <p className="text-sm text-primaryfg/80">{service.short}</p>
-                  <span className="text-xs font-semibold uppercase tracking-[0.32em] text-gold">View details →</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="py-24">
-          <div className="mx-auto max-w-7xl space-y-12 px-6 md:px-10">
-            <header className="max-w-3xl space-y-4">
-              <p className="text-xs uppercase tracking-[0.35em] text-primary/70">NNN inventory coverage</p>
-              <h2 className="font-serif text-3xl font-semibold text-heading md:text-4xl">
-                Target the essential retail formats exchange buyers search for most.
-              </h2>
-              <p className="text-base text-ink/80">
-                We work across food service, medical, auto, logistics, and everyday retail to keep a live list of single tenant
-                assets that meet NOI, credit, and term requirements.
-              </p>
-            </header>
-
-            <div className="grid gap-6 lg:grid-cols-3">
-              {inventoryCategories.map((category) => (
-                <article
-                  key={category.slug}
-                  className="rounded-3xl border border-outline/60 bg-panel p-6 shadow-[0_18px_44px_rgba(21,34,59,0.08)] transition hover:-translate-y-1 hover:border-accent"
-                >
-                  <div className="flex items-center justify-between gap-4">
-                    <h3 className="text-xl font-semibold text-heading">{category.name}</h3>
-                    <Link href={category.route} className="text-xs font-semibold uppercase tracking-[0.32em] text-primary hover:text-accent">
-                      Listings
-                    </Link>
-                  </div>
-                  {category.note && <p className="mt-3 text-sm text-ink/75">{category.note}</p>}
-                </article>
-              ))}
-            </div>
-
-            <div className="rounded-3xl border border-outline/60 bg-secondary/50 p-8 shadow-[0_18px_44px_rgba(21,34,59,0.08)]">
-              <p className="text-xs uppercase tracking-[0.32em] text-primary/70">Featured tenant profiles</p>
-              <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {/* Exclusive Listings / Property Showcase - Carousel Style */}
+        <section className="bg-paper py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
+            <h2 className="section-title text-3xl md:text-4xl lg:text-5xl">
+              EXPLORE EXCLUSIVE LISTINGS
+            </h2>
+            
+            <div className="mt-12 overflow-hidden">
+              <div 
+                className="flex gap-6 transition-transform duration-500 ease-out"
+                style={{ transform: `translateX(-${carouselIndex * (100 / itemsPerView)}%)` }}
+              >
                 {propertyShowcase.map((type) => {
                   const getCategoryImage = (slug: string) => {
                     if (slug.includes("auto") || slug.includes("tire") || slug.includes("oil-change")) {
@@ -416,24 +233,24 @@ export default function Home() {
                     <Link
                       key={type.slug}
                       href={type.route}
-                      className="group overflow-hidden rounded-3xl border border-outline/50 bg-panel shadow-[0_16px_36px_rgba(21,34,59,0.08)] transition hover:-translate-y-1 hover:border-accent"
+                      className="group relative min-w-[calc(33.333%-1rem)] flex-shrink-0"
                     >
-                      {categoryImage && (
-                        <div className="relative h-40 w-full">
+                      <div className="relative aspect-[4/3] overflow-hidden">
+                        {categoryImage && (
                           <Image
                             src={categoryImage}
                             alt={`${type.name} properties`}
                             fill
-                            className="object-cover transition group-hover:scale-105"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           />
-                        </div>
-                      )}
-                      <div className="p-6">
-                        <p className="text-xs uppercase tracking-[0.32em] text-heading/60">Net Lease</p>
-                        <h3 className="mt-2 text-xl font-semibold text-heading">{type.name}</h3>
-                        <p className="mt-2 text-xs font-semibold uppercase tracking-[0.32em] text-primary">
-                          View details →
+                        )}
+                        <span className="for-sale-badge">FOR SALE</span>
+                      </div>
+                      <div className="mt-4">
+                        <p className="font-serif text-2xl text-primary">{type.name}</p>
+                        <p className="mt-1 text-xs uppercase tracking-[0.1em] text-ink/60">
+                          Net Lease | Fort Worth Area
                         </p>
                       </div>
                     </Link>
@@ -441,53 +258,290 @@ export default function Home() {
                 })}
               </div>
             </div>
+
+            {/* Carousel Controls */}
+            <div className="mt-10 flex items-center justify-between">
+              <div className="carousel-nav">
+                <button onClick={prevSlide} disabled={carouselIndex === 0} aria-label="Previous">
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <button onClick={nextSlide} disabled={carouselIndex === maxIndex} aria-label="Next">
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+              <Link
+                href="/property-types"
+                className="malibu-btn-outline"
+              >
+                VIEW ALL
+              </Link>
+            </div>
           </div>
         </section>
 
-        <section className="bg-secondary py-24">
-          <div className="mx-auto max-w-7xl space-y-12 px-6 md:px-10">
-            <header className="max-w-3xl space-y-4">
-              <p className="text-xs uppercase tracking-[0.35em] text-primary">Fort Worth coverage</p>
-              <h2 className="font-serif text-3xl font-semibold text-heading md:text-4xl">
+        {/* Featured Neighborhoods / Markets Grid */}
+        <section className="bg-paper py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
+            <h2 className="section-title text-center text-3xl md:text-4xl lg:text-5xl">
+              FEATURED NEIGHBORHOODS
+            </h2>
+            
+            <div className="mt-12 grid gap-4 md:grid-cols-3">
+              {featuredMarkets.map((market, index) => (
+                <Link
+                  key={market.slug}
+                  href={market.route}
+                  className={`group relative overflow-hidden ${
+                    index < 3 ? 'aspect-[4/3]' : 'aspect-[4/3]'
+                  }`}
+                >
+                  {market.heroImage && (
+                    <Image
+                      src={market.heroImage}
+                      alt={`${market.name} commercial real estate`}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                    <h3 className="font-serif text-2xl font-normal tracking-wide text-white md:text-3xl">
+                      {market.name.toUpperCase()}
+                    </h3>
+                    <div className="mt-4 opacity-0 transition-opacity group-hover:opacity-100">
+                      <span className="border border-white px-4 py-2 text-xs tracking-[0.15em] text-white">
+                        LEARN MORE
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Trust Signals / Authority Section */}
+        <section className="bg-paper py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
+            <header className="max-w-3xl">
+              <p className="text-xs uppercase tracking-[0.2em] text-accent">Authority from the first scroll</p>
+              <h2 className="mt-4 font-serif text-3xl font-normal text-primary md:text-4xl">
+                Trusted Fort Worth professionals guiding compliant, deadline-driven exchanges.
+              </h2>
+              <p className="mt-4 text-base text-ink/70">
+                Investors expect structure, timeline accountability, and documented compliance on day one. These pillars anchor
+                every engagement we lead.
+              </p>
+            </header>
+            
+            <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+              {trustSignals.map((signal) => {
+                const Icon = signal.icon;
+                return (
+                  <div
+                    key={signal.title}
+                    className="malibu-card border border-outline/40 bg-panel p-6"
+                  >
+                    <Icon className="h-8 w-8 text-accent" aria-hidden />
+                    <h3 className="mt-4 font-serif text-lg font-normal text-primary">{signal.title}</h3>
+                    <p className="mt-2 text-sm text-ink/70">{signal.description}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Why Choose Us Section */}
+        <section className="bg-secondary py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
+            <header className="max-w-3xl">
+              <p className="text-xs uppercase tracking-[0.2em] text-accent">Why Fort Worth investors choose us</p>
+              <h2 className="mt-4 font-serif text-3xl font-normal text-primary md:text-4xl">
+                Structured services tuned for 45/180 discipline, build-to-suit, and turnkey NNN holds.
+              </h2>
+              <p className="mt-4 text-base text-ink/70">
+                Every service listed below lives in our playbook so investors can move from sale proceeds to stable single
+                tenant income without missing IRS deadlines.
+              </p>
+            </header>
+
+            <div className="mt-12 grid gap-6 md:grid-cols-3">
+              {whyCards.map((card) => {
+                const Icon = card.icon;
+                return (
+                  <div
+                    key={card.title}
+                    className="malibu-card border border-outline/40 bg-panel p-6"
+                  >
+                    <Icon className="h-8 w-8 text-accent" aria-hidden />
+                    <h3 className="mt-4 font-serif text-xl font-normal text-primary">{card.title}</h3>
+                    <p className="mt-2 text-sm text-ink/70">{card.description}</p>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="mt-16">
+              <HomeServiceCollections collections={serviceCollections} />
+            </div>
+          </div>
+        </section>
+
+        {/* Timeline Section */}
+        <section className="bg-paper py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
+            <header className="max-w-3xl text-center md:text-left">
+              <p className="text-xs uppercase tracking-[0.2em] text-accent">How a 1031 works</p>
+              <h2 className="mt-4 font-serif text-3xl font-normal text-primary md:text-4xl">
+                A transparent 1031 timeline that protects the 45/180 windows.
+              </h2>
+              <p className="mt-4 text-base text-ink/70">
+                This process braids together exchange consultation, intermediary controls, nationwide sourcing, and reporting
+                so every move is documented for the IRS and lender partners.
+              </p>
+            </header>
+
+            <div className="relative mt-12">
+              <div className="hidden h-px w-full bg-outline/60 md:block" aria-hidden />
+              <div className="grid gap-8 md:grid-cols-3">
+                {timelineSteps.map((step, index) => {
+                  const Icon = step.icon;
+                  return (
+                    <div key={step.title} className="relative malibu-card border border-outline/40 bg-panel p-6">
+                      <div className="flex items-center gap-3">
+                        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-medium text-primaryfg">
+                          {index + 1}
+                        </span>
+                        <Icon className="h-6 w-6 text-accent" aria-hidden />
+                      </div>
+                      <h3 className="mt-4 font-serif text-lg font-normal text-primary">{step.title}</h3>
+                      <p className="mt-2 text-sm text-ink/70">{step.description}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Core Services Section */}
+        <section className="bg-primary py-20 text-primaryfg lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
+            <header className="max-w-3xl">
+              <p className="text-xs uppercase tracking-[0.2em] text-accent">Core services</p>
+              <h2 className="mt-4 font-serif text-3xl font-normal md:text-4xl">
+                Advisory, sourcing, and reporting executed with Fort Worth accountability.
+              </h2>
+              <p className="mt-4 text-base text-primaryfg/70">
+                From forward and reverse exchanges to NNN verification and reporting, these engagements channel the same
+                process discipline we bring to every investor relationship.
+              </p>
+            </header>
+
+            <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {servicesGrid.map((service) => (
+                <Link
+                  key={service.slug}
+                  href={service.route}
+                  className="group flex flex-col gap-4 border border-white/20 bg-primary/60 p-6 transition hover:border-accent"
+                >
+                  <p className="text-xs uppercase tracking-[0.15em] text-primaryfg/50">{service.category}</p>
+                  <h3 className="font-serif text-xl font-normal text-white">{service.name}</h3>
+                  <p className="text-sm text-primaryfg/70">{service.short}</p>
+                  <span className="mt-auto text-xs font-medium tracking-[0.15em] text-accent">VIEW DETAILS &rarr;</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Inventory Categories Section */}
+        <section className="bg-paper py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
+            <header className="max-w-3xl">
+              <p className="text-xs uppercase tracking-[0.2em] text-accent">NNN inventory coverage</p>
+              <h2 className="mt-4 font-serif text-3xl font-normal text-primary md:text-4xl">
+                Target the essential retail formats exchange buyers search for most.
+              </h2>
+              <p className="mt-4 text-base text-ink/70">
+                We work across food service, medical, auto, logistics, and everyday retail to keep a live list of single tenant
+                assets that meet NOI, credit, and term requirements.
+              </p>
+            </header>
+
+            <div className="mt-12 grid gap-6 lg:grid-cols-3">
+              {inventoryCategories.map((category) => (
+                <article
+                  key={category.slug}
+                  className="malibu-card border border-outline/40 bg-panel p-6"
+                >
+                  <div className="flex items-center justify-between gap-4">
+                    <h3 className="font-serif text-xl font-normal text-primary">{category.name}</h3>
+                    <Link href={category.route} className="text-xs font-medium tracking-[0.15em] text-accent hover:text-primary">
+                      LISTINGS
+                    </Link>
+                  </div>
+                  {category.note && <p className="mt-3 text-sm text-ink/70">{category.note}</p>}
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Service Area / Coverage Section */}
+        <section className="bg-secondary py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
+            <header className="max-w-3xl">
+              <p className="text-xs uppercase tracking-[0.2em] text-accent">Fort Worth coverage</p>
+              <h2 className="mt-4 font-serif text-3xl font-normal text-primary md:text-4xl">
                 {coverageCities.length}+ DFW metros plus boots-on-the-ground partners in every state.
               </h2>
-              <p className="text-base text-secondaryfg/80">
+              <p className="mt-4 text-base text-ink/70">
                 Local intel keeps Fort Worth buyers ahead of listings while our broker, developer, and sale-leaseback partners
                 unlock credit tenants coast to coast.
               </p>
             </header>
 
-            <div className="flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap gap-3">
               {coverageHighlights.map((market) => (
-                <span key={market} className="rounded-full border border-outline/60 bg-panel px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-heading">
-                  {market}
+                <span key={market} className="border border-primary/30 bg-panel px-4 py-2 text-xs font-medium tracking-[0.1em] text-primary">
+                  {market.toUpperCase()}
                 </span>
               ))}
             </div>
 
-            <HomeServiceArea locations={featuredMarkets} />
+            <div className="mt-12">
+              <HomeServiceArea locations={featuredMarkets} />
+            </div>
 
-            <div className="rounded-3xl border border-outline/60 bg-panel p-6 text-sm text-ink/80 shadow-[0_18px_44px_rgba(21,34,59,0.08)]">
+            <div className="mt-12 border border-outline/40 bg-panel p-6 text-sm text-ink/70">
               A 1031 exchange defers federal and Texas income tax on qualifying real property. Texas does not levy a state income
               tax, but transfer and recording fees may apply.
             </div>
           </div>
         </section>
 
-        <section className="py-24">
-          <div className="mx-auto max-w-7xl space-y-12 px-6 md:px-10">
-            <header className="max-w-3xl space-y-4 text-center md:text-left">
-              <p className="text-xs uppercase tracking-[0.35em] text-primary/70">Interactive tools</p>
-              <h2 className="font-serif text-3xl font-semibold text-heading md:text-4xl">
+        {/* Interactive Tools Section */}
+        <section className="bg-paper py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
+            <header className="max-w-3xl text-center md:text-left">
+              <p className="text-xs uppercase tracking-[0.2em] text-accent">Interactive tools</p>
+              <h2 className="mt-4 font-serif text-3xl font-normal text-primary md:text-4xl">
                 Real-time calculators to keep your 1031 plan compliant.
               </h2>
-              <p className="text-base text-ink/80">
+              <p className="mt-4 text-base text-ink/70">
                 Use our Fort Worth tools to test boot exposure and confirm your replacement identification strategy before
                 reaching out to advisors.
               </p>
             </header>
 
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="mt-12 grid gap-6 md:grid-cols-2">
               {toolsData.map((tool, index) => {
                 const Icon = toolIcons[tool.slug] ?? CalculatorIcon;
                 return (
@@ -498,14 +552,14 @@ export default function Home() {
                     whileInView="visible"
                     viewport={{ once: true }}
                     transition={{ duration: 0.45, delay: index * 0.1 }}
-                    className="group rounded-3xl border border-outline/60 bg-panel p-8 shadow-[0_18px_44px_rgba(21,34,59,0.08)] transition hover:-translate-y-1 hover:border-accent"
+                    className="group malibu-card border border-outline/40 bg-panel p-8"
                   >
                     <Link href={tool.route} className="block">
-                      <Icon className="mb-4 h-12 w-12 text-accent" aria-hidden />
-                      <h3 className="mb-2 text-2xl font-semibold text-heading">{tool.name}</h3>
-                      <p className="text-sm text-ink/75">{tool.description}</p>
-                      <p className="mt-4 text-xs font-semibold uppercase tracking-[0.35em] text-primary">
-                        Open tool →
+                      <Icon className="mb-4 h-10 w-10 text-accent" aria-hidden />
+                      <h3 className="mb-2 font-serif text-2xl font-normal text-primary">{tool.name}</h3>
+                      <p className="text-sm text-ink/70">{tool.description}</p>
+                      <p className="mt-4 text-xs font-medium tracking-[0.15em] text-accent">
+                        OPEN TOOL &rarr;
                       </p>
                     </Link>
                   </motion.div>
@@ -515,62 +569,158 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="bg-secondary py-24">
-          <div className="mx-auto max-w-7xl space-y-12 px-6 md:px-10">
-            <header className="max-w-3xl space-y-4 text-center md:text-left">
-              <p className="text-xs uppercase tracking-[0.35em] text-primary">Compliance resources</p>
-              <h2 className="font-serif text-3xl font-semibold text-heading md:text-4xl">
+        {/* Resources Section */}
+        <section className="bg-secondary py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
+            <header className="max-w-3xl text-center md:text-left">
+              <p className="text-xs uppercase tracking-[0.2em] text-accent">Compliance resources</p>
+              <h2 className="mt-4 font-serif text-3xl font-normal text-primary md:text-4xl">
                 Reference-ready IRS links and Texas-specific transfer intel.
               </h2>
-              <p className="text-base text-secondaryfg/80">
+              <p className="mt-4 text-base text-ink/70">
                 Staying ahead of helpful content signals means giving investors and tax partners the exact source material they
                 expect. These are the references we keep at arm's reach for every transaction.
               </p>
             </header>
 
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="mt-12 grid gap-6 md:grid-cols-2">
               {resources.map((resource) => (
                 <a
                   key={resource.key}
                   href={resource.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded-3xl border border-outline/60 bg-panel p-6 transition hover:-translate-y-1 hover:border-accent"
+                  className="malibu-card border border-outline/40 bg-panel p-6"
                 >
-                  <p className="text-xs uppercase tracking-[0.32em] text-heading/60">Official source</p>
-                  <h3 className="mt-2 text-xl font-semibold text-heading">{resource.label}</h3>
-                  <p className="mt-3 text-xs font-semibold uppercase tracking-[0.32em] text-primary">Open resource ↗</p>
+                  <p className="text-xs uppercase tracking-[0.15em] text-accent">Official source</p>
+                  <h3 className="mt-2 font-serif text-xl font-normal text-primary">{resource.label}</h3>
+                  <p className="mt-3 text-xs font-medium tracking-[0.15em] text-accent">OPEN RESOURCE &rarr;</p>
                 </a>
               ))}
             </div>
 
-            <div className="rounded-3xl border border-outline/60 bg-panel/80 p-6 text-sm text-ink/75">
-              <strong className="text-heading">Reminder:</strong> Educational content only. Coordinate with your CPA and attorney for personalised guidance.
+            <div className="mt-12 border border-outline/40 bg-panel/80 p-6 text-sm text-ink/70">
+              <strong className="text-primary">Reminder:</strong> Educational content only. Coordinate with your CPA and attorney for personalised guidance.
             </div>
           </div>
         </section>
 
-        <section className="py-24">
-          <div className="mx-auto max-w-6xl grid gap-12 px-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:px-10">
+        {/* About / Team Section - Malibu Life Style */}
+        <section className="bg-paper py-20 lg:py-28">
+          <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
+            <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+              <div>
+                <h2 className="font-serif text-3xl font-normal uppercase tracking-wide text-primary md:text-4xl">
+                  THE FORT WORTH EXCHANGE
+                </h2>
+                <p className="mt-6 text-base text-ink/80">
+                  Founded in Fort Worth, our team is now a part of the largest and most exciting 1031 exchange advisory networks
+                  in the country. We represent a shared enthusiasm towards people, bespoke properties, and of course, the Texas
+                  commercial real estate lifestyle.
+                </p>
+                <p className="mt-4 text-base text-ink/80">
+                  Not only does our team continue to bring in record transactions year after year, ranking among the top 1031
+                  exchange advisors nationally, but we perform under a "living life to the fullest" mentality, which means
+                  customer service is a top priority—as is staying ahead of the ever-changing industry.
+                </p>
+                <div className="mt-8 flex flex-wrap gap-4">
+                  <Link href="/about" className="malibu-btn-outline">
+                    MEET THE TEAM
+                  </Link>
+                  <Link
+                    href="/contact#contact-form"
+                    className="bg-primary px-6 py-3 text-xs font-medium tracking-[0.15em] text-primaryfg transition hover:bg-primary/90"
+                  >
+                    INQUIRE NOW
+                  </Link>
+                </div>
+              </div>
+              <div className="relative">
+                <div className="aspect-[4/3] overflow-hidden">
+                  <Image
+                    src="/fort-worth-texas-1031-exchange-homepage-hero-1.jpg"
+                    alt="Fort Worth skyline"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials Section - Malibu Life Style with Background */}
+        <section className="relative py-20 lg:py-28">
+          <div className="absolute inset-0">
+            <Image
+              src="/fort-worth-texas-1031-exchange-homepage-hero-2.jpg"
+              alt="Fort Worth landscape"
+              fill
+              className="object-cover"
+              sizes="100vw"
+            />
+            <div className="absolute inset-0 bg-black/50" />
+          </div>
+          <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
+            <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+              <div className="flex justify-center">
+                <Image
+                  src="/1031-exchange-fort-worth-tx-logo.png"
+                  alt="Fort Worth 1031 Exchange Logo"
+                  width={200}
+                  height={200}
+                  className="h-32 w-auto opacity-80 md:h-40"
+                />
+              </div>
+              <div>
+                <h2 className="font-serif text-2xl font-normal uppercase tracking-wide text-white md:text-3xl">
+                  WHAT OUR CLIENTS SAY
+                </h2>
+                <blockquote className="mt-6">
+                  <p className="text-base text-white/90 md:text-lg">
+                    "An absolute pleasure working with the Fort Worth team. They responded quickly and were very knowledgeable
+                    and friendly. Would recommend to anyone looking to complete a 1031 exchange."
+                  </p>
+                  <footer className="mt-4 text-sm font-medium text-white/70">
+                    — Fort Worth Investor
+                  </footer>
+                </blockquote>
+                <div className="mt-8">
+                  <Link
+                    href="/contact"
+                    className="border border-white px-6 py-3 text-xs font-medium tracking-[0.15em] text-white transition hover:bg-white hover:text-primary"
+                  >
+                    VIEW ALL
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Contact / Direct Access Section */}
+        <section className="bg-paper py-20 lg:py-28">
+          <div className="mx-auto max-w-6xl grid gap-12 px-6 md:grid-cols-2 md:px-12 lg:px-16">
             <div className="space-y-5">
-              <p className="text-xs uppercase tracking-[0.35em] text-primary/70">Direct access</p>
-              <h2 className="font-serif text-3xl font-semibold text-heading md:text-4xl">
+              <p className="text-xs uppercase tracking-[0.2em] text-accent">Direct access</p>
+              <h2 className="font-serif text-3xl font-normal text-primary md:text-4xl">
                 Ready to identify your replacement property?
               </h2>
-              <p className="text-base text-ink/80">
+              <p className="text-base text-ink/70">
                 Call, email, or use the secure intake form. We help unrepresented exchange buyers move from sale to closing with
                 clarity, national inventory, and coordinated reporting.
               </p>
-              <div className="space-y-2 text-sm text-ink/75">
+              <div className="space-y-2 text-sm text-ink/70">
                 <p>
-                  Call {" "}
-                  <a href={`tel:${site.phoneDigits}`} className="text-primary hover:underline">
+                  Call{" "}
+                  <a href={`tel:${site.phoneDigits}`} className="text-primary hover:text-accent">
                     {site.phone}
                   </a>
                 </p>
                 <p>
-                  Email {" "}
-                  <a href={`mailto:${site.email}`} className="text-primary hover:underline">
+                  Email{" "}
+                  <a href={`mailto:${site.email}`} className="text-primary hover:text-accent">
                     {site.email}
                   </a>
                 </p>
@@ -579,27 +729,68 @@ export default function Home() {
               <div className="flex flex-wrap gap-3">
                 <ScrollToFormButton
                   targetId="home-contact-form"
-                  className="inline-flex items-center justify-center rounded-full bg-gold px-6 py-3 text-xs font-semibold uppercase tracking-[0.32em] text-ink transition hover:-translate-y-0.5 hover:shadow-gold"
+                  className="malibu-btn-outline"
                 >
-                  Open the form
+                  OPEN THE FORM
                 </ScrollToFormButton>
                 <Link
                   href="/services"
-                  className="inline-flex items-center justify-center rounded-full border border-primary px-6 py-3 text-xs font-semibold uppercase tracking-[0.32em] text-primary hover:-translate-y-0.5 hover:bg-primary/10"
+                  className="px-6 py-3 text-xs font-medium tracking-[0.15em] text-primary transition hover:text-accent"
                 >
-                  View services
+                  VIEW SERVICES &rarr;
                 </Link>
               </div>
             </div>
-            <div className="rounded-3xl border border-outline/60 bg-panel p-6 text-sm text-ink/75 shadow-[0_18px_44px_rgba(21,34,59,0.08)]">
-              <strong className="text-heading">Disclosure:</strong> This site routes inquiries to our chosen fulfillment partner for
+            <div className="border border-outline/40 bg-panel p-6 text-sm text-ink/70">
+              <strong className="text-primary">Disclosure:</strong> This site routes inquiries to our chosen fulfillment partner for
               1031 exchange advisory and property identification support. Educational content only. Not tax, legal, or investment
               advice.
             </div>
           </div>
         </section>
 
-        <BottomCTA />
+        {/* Contact Form Section */}
+        <section className="bg-secondary py-20 lg:py-28">
+          <div className="mx-auto max-w-3xl px-6 md:px-12 lg:px-16">
+            <ContactForm
+              formId="home-contact-form"
+              variant="default"
+              heading="Request 1031 intake"
+              description="Tell us about your relinquished asset and replacement timeline. We respond the same business day."
+            />
+          </div>
+        </section>
+
+        {/* Bottom CTA - Palm tree style from Malibu Life */}
+        <section className="relative py-32 lg:py-40">
+          <div className="absolute inset-0">
+            <Image
+              src="/fort-worth-texas-1031-exchange-homepage-hero-3.jpg"
+              alt="Fort Worth skyline at sunset"
+              fill
+              className="object-cover"
+              sizes="100vw"
+            />
+            <div className="absolute inset-0 bg-black/40" />
+          </div>
+          <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
+            <span className="script-the text-4xl md:text-5xl">the</span>
+            <h2 className="mt-2 font-serif text-4xl font-normal tracking-wide text-white md:text-6xl">
+              FORT WORTH
+            </h2>
+            <p className="font-serif text-3xl font-normal tracking-wide text-accent md:text-5xl">
+              EXCHANGE
+            </p>
+            <div className="mt-10">
+              <Link
+                href="/contact#contact-form"
+                className="border border-white px-8 py-4 text-xs font-medium tracking-[0.2em] text-white transition hover:bg-white hover:text-primary"
+              >
+                WORK WITH US
+              </Link>
+            </div>
+          </div>
+        </section>
       </main>
       <Script
         id="professional-service-schema"

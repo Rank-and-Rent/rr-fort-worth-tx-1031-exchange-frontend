@@ -16,7 +16,7 @@ export default function RotatingHeroBackground() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % heroImages.length);
-    }, 5000); // Rotate every 5 seconds
+    }, 6000); // Rotate every 6 seconds
 
     return () => clearInterval(interval);
   }, []);
@@ -26,7 +26,7 @@ export default function RotatingHeroBackground() {
       {heroImages.map((src, index) => (
         <div
           key={src}
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+          className={`absolute inset-0 transition-opacity duration-1500 ease-in-out ${
             index === currentIndex ? 'opacity-100' : 'opacity-0'
           }`}
         >
@@ -39,10 +39,10 @@ export default function RotatingHeroBackground() {
             sizes="100vw"
             quality={90}
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-[#E7E3DD]/80 via-white/70 to-[#F9F9F8]/80" />
+          {/* Malibu Life style overlay - subtle gradient */}
+          <div className="absolute inset-0 bg-gradient-to-b from-paper/30 via-paper/50 to-paper/70" />
         </div>
       ))}
     </div>
   );
 }
-

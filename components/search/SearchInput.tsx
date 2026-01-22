@@ -10,8 +10,8 @@ type SearchInputProps = {
 export default function SearchInput({ value, onChange, placeholder, label }: SearchInputProps) {
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-xs uppercase tracking-[0.32em] text-heading/70">{label}</label>
-      <div className="flex items-center gap-2 rounded-full border border-outline/70 bg-panel px-4 py-2 shadow-[0_4px_12px_rgba(21,34,59,0.08)]">
+      <label className="text-xs uppercase tracking-[0.15em] text-primary/70">{label}</label>
+      <div className="flex items-center gap-2 border border-outline/60 bg-panel px-4 py-3">
         <input
           type="search"
           value={value}
@@ -22,20 +22,19 @@ export default function SearchInput({ value, onChange, placeholder, label }: Sea
             }
           }}
           placeholder={placeholder}
-          className="w-full bg-transparent text-sm text-ink placeholder:text-ink/50 focus:outline-none"
+          className="w-full bg-transparent text-sm text-ink placeholder:text-ink/40 focus:outline-none"
           aria-label={label}
         />
         {value && (
           <button
             type="button"
-            className="text-xs font-semibold uppercase tracking-[0.3em] text-primary hover:text-accent"
+            className="text-xs font-medium uppercase tracking-[0.1em] text-accent hover:text-primary"
             onClick={() => onChange("")}
           >
-            Clear
+            CLEAR
           </button>
         )}
       </div>
     </div>
   );
 }
-

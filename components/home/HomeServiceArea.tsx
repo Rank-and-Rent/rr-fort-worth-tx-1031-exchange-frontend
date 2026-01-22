@@ -29,36 +29,40 @@ export default function HomeServiceArea({ locations }: Props) {
       />
 
       {filtered.length === 0 ? (
-        <div className="rounded-3xl border border-outline/60 bg-secondary/40 p-6 text-center text-sm text-heading">
-          We can help with "{query}". {" "}
-          <Link href="/contact?projectType=Other" className="text-primary underline">
+        <div className="border border-outline/40 bg-panel p-6 text-center text-sm text-primary">
+          We can help with &quot;{query}&quot;.{" "}
+          <Link href="/contact?projectType=Other" className="text-accent underline">
             Contact us with Other selected
           </Link>
           .
         </div>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((market) => (
             <Link
               key={market.slug}
               href={market.route}
-              className="group overflow-hidden rounded-3xl border border-outline/60 bg-panel shadow-[0_16px_40px_rgba(21,34,59,0.08)] transition hover:-translate-y-1 hover:border-accent"
+              className="group relative overflow-hidden aspect-[4/3]"
             >
               {market.heroImage && (
-                <div className="relative h-40 w-full">
-                  <Image
-                    src={market.heroImage}
-                    alt={`${market.name} commercial real estate`}
-                    fill
-                    className="object-cover transition group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  />
-                </div>
+                <Image
+                  src={market.heroImage}
+                  alt={`${market.name} commercial real estate`}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                />
               )}
-              <div className="p-5">
-                <p className="text-xs uppercase tracking-[0.32em] text-heading/60">Texas metro</p>
-                <h3 className="mt-2 text-xl font-semibold text-heading">{market.name}</h3>
-                <p className="mt-2 text-sm text-ink/80">1031 exchange support in {market.name}</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+                <h3 className="font-serif text-xl font-normal tracking-wide text-white md:text-2xl">
+                  {market.name.toUpperCase()}
+                </h3>
+                <div className="mt-3 opacity-0 transition-opacity group-hover:opacity-100">
+                  <span className="border border-white px-3 py-1.5 text-xs tracking-[0.1em] text-white">
+                    VIEW DETAILS
+                  </span>
+                </div>
               </div>
             </Link>
           ))}
@@ -67,4 +71,3 @@ export default function HomeServiceArea({ locations }: Props) {
     </div>
   );
 }
-

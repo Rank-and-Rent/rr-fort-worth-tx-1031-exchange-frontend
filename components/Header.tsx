@@ -10,11 +10,10 @@ import { locationsData, servicesData } from "@/data";
 type DropdownKey = "services" | "locations" | null;
 
 const staticLinks = [
-  { label: "Property Types", href: "/property-types" },
-  { label: "Inventory", href: "/inventory" },
-  { label: "Tools", href: "/tools" },
-  { label: "About", href: "/about" },
-  { label: "Blog", href: "/blog" },
+  { label: "PROPERTY TYPES", href: "/property-types" },
+  { label: "INVENTORY", href: "/inventory" },
+  { label: "TOOLS", href: "/tools" },
+  { label: "ABOUT", href: "/about" },
 ];
 
 export default function Header() {
@@ -50,12 +49,10 @@ export default function Header() {
       const target = event.target as Node;
       if (!headerRef.current) return;
       
-      // Don't close if clicking inside the header (mobile menu button or nav)
       if (headerRef.current.contains(target)) {
         return;
       }
       
-      // Close mobile menu and dropdowns when clicking outside
       if (mobileMenuOpen) {
         setMobileMenuOpen(false);
       }
@@ -74,108 +71,133 @@ export default function Header() {
   }, [mobileMenuOpen]);
 
   return (
-    <header ref={headerRef} className="sticky top-0 z-50 border-b border-outline/40 bg-paper/95 shadow-sm backdrop-blur">
-      <div className="container mx-auto flex items-center justify-between gap-6 px-4 py-4 md:px-6 lg:px-8">
+    <header ref={headerRef} className="sticky top-0 z-50 bg-paper/95 backdrop-blur">
+      <div className="mx-auto flex items-center justify-between gap-6 px-8 py-4 md:px-12 lg:px-16">
+        {/* Logo */}
         <Link href="/" className="flex items-center shrink-0">
           <Image
             src="/1031-exchange-fort-worth-tx-logo.png"
             alt={site.company}
-            width={200}
-            height={60}
-            className="h-16 w-auto object-contain md:h-20"
+            width={180}
+            height={54}
+            className="h-14 w-auto object-contain md:h-16"
             priority
             unoptimized
           />
         </Link>
 
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:flex items-center gap-8">
+          <DropdownTrigger
+            label="SERVICES"
+            open={openDropdown === "services"}
+            onOpenChange={(state) => setOpenDropdown(state ? "services" : null)}
+            onSetCloseTimeout={(timeout) => {
+              closeTimeoutRef.current = timeout;
+            }}
+            onCancelCloseTimeout={cancelCloseTimeout}
+          />
+
+          <DropdownTrigger
+            label="LOCATIONS"
+            open={openDropdown === "locations"}
+            onOpenChange={(state) => setOpenDropdown(state ? "locations" : null)}
+            onSetCloseTimeout={(timeout) => {
+              closeTimeoutRef.current = timeout;
+            }}
+            onCancelCloseTimeout={cancelCloseTimeout}
+          />
+
+          {staticLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-xs font-medium tracking-[0.15em] text-primary transition hover:text-accent"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Hamburger Menu Button */}
         <button
           type="button"
-          className="rounded border border-outline px-3 py-1 text-sm text-heading lg:hidden"
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primaryfg transition hover:bg-primary/90"
           onClick={(e) => {
             e.stopPropagation();
             setMobileMenuOpen((prev) => !prev);
           }}
           aria-expanded={mobileMenuOpen}
           aria-controls="primary-navigation"
+          aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
         >
-          {mobileMenuOpen ? "Close" : "Menu"}
-        </button>
-
-        <nav
-          id="primary-navigation"
-          className={clsx(
-            "absolute left-0 top-full w-full border-b border-outline/30 bg-paper/98 p-4 shadow-sm lg:static lg:flex lg:w-auto lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none",
-            mobileMenuOpen ? "block" : "hidden lg:block"
-          )}
-        >
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-6">
-            <DropdownTrigger
-              label="Services"
-              open={openDropdown === "services"}
-              onOpenChange={(state) => setOpenDropdown(state ? "services" : null)}
-              onSetCloseTimeout={(timeout) => {
-                closeTimeoutRef.current = timeout;
-              }}
-              onCancelCloseTimeout={cancelCloseTimeout}
-            >
-              <DropdownMenu
-                items={servicesPreview}
-                viewAllLabel="View all services"
-                viewAllHref="/services"
-                className="w-full"
-                onNavigate={() => {
-                  setOpenDropdown(null);
-                  setMobileMenuOpen(false);
-                }}
-              />
-            </DropdownTrigger>
-
-            <DropdownTrigger
-              label="Locations"
-              open={openDropdown === "locations"}
-              onOpenChange={(state) => setOpenDropdown(state ? "locations" : null)}
-              onSetCloseTimeout={(timeout) => {
-                closeTimeoutRef.current = timeout;
-              }}
-              onCancelCloseTimeout={cancelCloseTimeout}
-            >
-              <DropdownMenu
-                items={locationPreview}
-                viewAllLabel="View all locations"
-                viewAllHref="/locations"
-                className="w-full"
-                onNavigate={() => {
-                  setOpenDropdown(null);
-                  setMobileMenuOpen(false);
-                }}
-              />
-            </DropdownTrigger>
-
-            {staticLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-sm text-ink transition hover:text-primary"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
-
-            <Link
-              href="/contact#contact-form"
-              className="rounded-full bg-gold px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-ink transition hover:-translate-y-0.5 hover:shadow-gold"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Contact
-            </Link>
+          <div className="flex flex-col gap-1">
+            <span className={clsx(
+              "block h-0.5 w-5 bg-current transition-transform",
+              mobileMenuOpen && "translate-y-1.5 rotate-45"
+            )} />
+            <span className={clsx(
+              "block h-0.5 w-5 bg-current transition-opacity",
+              mobileMenuOpen && "opacity-0"
+            )} />
+            <span className={clsx(
+              "block h-0.5 w-5 bg-current transition-transform",
+              mobileMenuOpen && "-translate-y-1.5 -rotate-45"
+            )} />
           </div>
-        </nav>
+        </button>
       </div>
 
+      {/* Mobile Menu */}
+      <nav
+        id="primary-navigation"
+        className={clsx(
+          "absolute left-0 top-full w-full bg-paper/98 p-6 shadow-lg transition-all duration-300 lg:hidden",
+          mobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
+        )}
+      >
+        <div className="flex flex-col gap-4">
+          <Link
+            href="/services"
+            className="text-sm font-medium tracking-[0.1em] text-primary transition hover:text-accent"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            SERVICES
+          </Link>
+          <Link
+            href="/locations"
+            className="text-sm font-medium tracking-[0.1em] text-primary transition hover:text-accent"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            LOCATIONS
+          </Link>
+          {staticLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-sm font-medium tracking-[0.1em] text-primary transition hover:text-accent"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <Link
+            href="/contact#contact-form"
+            className="mt-4 inline-flex items-center justify-center border border-primary bg-primary px-6 py-3 text-xs font-medium tracking-[0.15em] text-primaryfg transition hover:bg-primary/90"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            CONTACT
+          </Link>
+        </div>
+      </nav>
+
+      {/* Desktop Dropdown Panel */}
       <div
         ref={dropdownRef}
-        className="absolute left-0 right-0 top-full w-full border-b border-outline/40 bg-paper/98 backdrop-blur"
+        className={clsx(
+          "absolute left-0 right-0 top-full w-full bg-paper/98 backdrop-blur transition-all duration-300",
+          openDropdown ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
+        )}
         onMouseEnter={() => {
           cancelCloseTimeout();
         }}
@@ -184,29 +206,23 @@ export default function Header() {
         }}
       >
         {openDropdown === "services" && (
-          <div className="container mx-auto">
-            <DropdownPanel>
-              <DropdownMenu
-                items={servicesPreview}
-                viewAllLabel="View all services"
-                viewAllHref="/services"
-                className="w-full"
-                onNavigate={() => setOpenDropdown(null)}
-              />
-            </DropdownPanel>
+          <div className="mx-auto max-w-6xl px-8 py-8">
+            <DropdownMenu
+              items={servicesPreview}
+              viewAllLabel="VIEW ALL SERVICES"
+              viewAllHref="/services"
+              onNavigate={() => setOpenDropdown(null)}
+            />
           </div>
         )}
         {openDropdown === "locations" && (
-          <div className="container mx-auto">
-            <DropdownPanel>
-              <DropdownMenu
-                items={locationPreview}
-                viewAllLabel="View all locations"
-                viewAllHref="/locations"
-                className="w-full"
-                onNavigate={() => setOpenDropdown(null)}
-              />
-            </DropdownPanel>
+          <div className="mx-auto max-w-6xl px-8 py-8">
+            <DropdownMenu
+              items={locationPreview}
+              viewAllLabel="VIEW ALL LOCATIONS"
+              viewAllHref="/locations"
+              onNavigate={() => setOpenDropdown(null)}
+            />
           </div>
         )}
       </div>
@@ -216,7 +232,6 @@ export default function Header() {
 
 type DropdownTriggerProps = {
   label: string;
-  children: React.ReactNode;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSetCloseTimeout: (timeout: NodeJS.Timeout) => void;
@@ -225,7 +240,6 @@ type DropdownTriggerProps = {
 
 function DropdownTrigger({
   label,
-  children,
   open,
   onOpenChange,
   onSetCloseTimeout,
@@ -248,8 +262,8 @@ function DropdownTrigger({
       <button
         type="button"
         className={clsx(
-          "flex items-center gap-2 text-sm text-ink transition hover:text-primary",
-          open && "text-primary"
+          "flex items-center gap-2 text-xs font-medium tracking-[0.15em] text-primary transition hover:text-accent",
+          open && "text-accent"
         )}
         aria-expanded={open}
         onClick={() => {
@@ -258,9 +272,15 @@ function DropdownTrigger({
         }}
       >
         {label}
-        <span aria-hidden="true">▾</span>
+        <svg 
+          className={clsx("h-3 w-3 transition-transform", open && "rotate-180")} 
+          fill="none" 
+          viewBox="0 0 24 24" 
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
       </button>
-      {open && <div className="mt-2 space-y-2 lg:hidden">{children}</div>}
     </div>
   );
 }
@@ -270,43 +290,30 @@ type DropdownMenuProps = {
   viewAllLabel: string;
   viewAllHref: string;
   onNavigate: () => void;
-  className?: string;
 };
 
-function DropdownMenu({ items, viewAllHref, viewAllLabel, onNavigate, className }: DropdownMenuProps) {
+function DropdownMenu({ items, viewAllHref, viewAllLabel, onNavigate }: DropdownMenuProps) {
   return (
-    <div
-      className={clsx(
-        "grid gap-3 rounded-2xl border border-outline bg-panel p-4 shadow-glow",
-        className ?? "w-[320px]"
-      )}
-    >
+    <div className="grid gap-3 md:grid-cols-4">
       {items.map((item) => (
         <Link
           key={item.slug}
           href={item.route}
-          className="rounded-xl border border-outline/60 bg-secondary/40 px-3 py-2 text-sm text-heading transition hover:border-accent hover:bg-secondary/70"
+          className="border-b border-outline/30 py-3 text-sm text-primary transition hover:border-primary hover:text-accent"
           onClick={onNavigate}
         >
           {item.name}
         </Link>
       ))}
-      <Link
-        href={viewAllHref}
-        className="text-xs font-semibold uppercase tracking-[0.3em] text-primary hover:text-accent"
-        onClick={onNavigate}
-      >
-        {viewAllLabel}
-      </Link>
+      <div className="md:col-span-4 pt-4">
+        <Link
+          href={viewAllHref}
+          className="text-xs font-medium tracking-[0.15em] text-primary transition hover:text-accent"
+          onClick={onNavigate}
+        >
+          {viewAllLabel} &rarr;
+        </Link>
+      </div>
     </div>
   );
 }
-
-function DropdownPanel({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="hidden w-full justify-center py-4 lg:flex">
-      <div className="w-full max-w-5xl">{children}</div>
-    </div>
-  );
-}
-

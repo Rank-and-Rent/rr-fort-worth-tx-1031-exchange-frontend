@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #F9F9F8;
+  --color-paper: #F5F3ED;
   --color-ink: #1A1A1A;
-  --color-heading: #15223B;
-  --color-primary: #15223B;
-  --color-primaryfg: #F9F9F8;
-  --color-secondary: #E7E3DD;
-  --color-secondaryfg: #15223B;
-  --color-outline: #D1C9BA;
+  --color-heading: #1A5632;
+  --color-primary: #1A5632;
+  --color-primaryfg: #F5F3ED;
+  --color-secondary: #F5F3ED;
+  --color-secondaryfg: #1A5632;
+  --color-outline: #D4C9B8;
   --color-panel: #FFFFFF;
-  --color-accent: #B79349;
-  --color-gold: #B79349;
-  --color-burgundy: #0F172A;
+  --color-accent: #D4AF37;
+  --color-gold: #D4AF37;
+  --color-burgundy: #1A5632;
 }
 
 :root {
@@ -35,11 +35,6 @@ body {
 body {
   font-family: var(--font-inter, "Inter"), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   @apply bg-paper text-ink antialiased;
-  background-image:
-    radial-gradient(circle at 20% 10%, rgba(21, 34, 59, 0.08) 0%, transparent 60%),
-    radial-gradient(circle at 85% 20%, rgba(183, 147, 73, 0.08) 0%, transparent 55%),
-    linear-gradient(180deg, rgba(231, 227, 221, 0.35), transparent 45%);
-  background-attachment: fixed;
 }
 
 main {
@@ -53,9 +48,9 @@ h4,
 h5,
 h6 {
   font-family: var(--font-playfair, "Playfair Display"), "Times New Roman", serif;
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  line-height: 1.15;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
 }
 
 strong {
@@ -87,14 +82,108 @@ button {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(21, 34, 59, 0.1);
+  background: rgba(26, 86, 50, 0.1);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(21, 34, 59, 0.3);
+  background: rgba(26, 86, 50, 0.3);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(21, 34, 59, 0.45);
+  background: rgba(26, 86, 50, 0.45);
+}
+
+/* Malibu Life Green Stripe */
+.malibu-stripe {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  background: linear-gradient(180deg, #1A5632 0%, #1A5632 70%, #F5F3ED 70%, #F5F3ED 72%, #D4AF37 72%, #D4AF37 75%, #F5F3ED 75%);
+  z-index: 100;
+}
+
+/* Script font style for "the" */
+.script-the {
+  font-family: var(--font-playfair, "Playfair Display"), "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-accent);
+}
+
+/* Section title styling */
+.section-title {
+  font-family: var(--font-playfair, "Playfair Display"), "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+/* Card hover effects */
+.malibu-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.malibu-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(26, 86, 50, 0.15);
+}
+
+/* Button styles */
+.malibu-btn-outline {
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  background: transparent;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.malibu-btn-outline:hover {
+  background: var(--color-primary);
+  color: var(--color-primaryfg);
+}
+
+/* FOR SALE badge */
+.for-sale-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  color: var(--color-accent);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* Carousel navigation */
+.carousel-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.carousel-nav button {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-primary);
+  background: transparent;
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.carousel-nav button:hover {
+  background: var(--color-primary);
+  color: var(--color-primaryfg);
 }

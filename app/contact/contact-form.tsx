@@ -320,14 +320,14 @@ function ContactFormInner({
       <section
         id={formId}
         className={clsx(
-          "rounded-3xl border border-outline/60 bg-panel p-6 shadow-[0_20px_48px_rgba(21,34,59,0.1)]",
-          variant === "compact" && "p-5"
+          "border border-outline/40 bg-panel p-8",
+          variant === "compact" && "p-6"
         )}
       >
         <header className="space-y-2">
-          <p className="text-xs uppercase tracking-[0.32em] text-heading/60">Secure Intake</p>
-          <h3 className="font-serif text-2xl font-semibold text-heading">{heading}</h3>
-          <p className="text-sm text-ink/80">
+          <p className="text-xs uppercase tracking-[0.15em] text-accent">Secure Intake</p>
+          <h3 className="font-serif text-2xl font-normal text-primary">{heading}</h3>
+          <p className="text-sm text-ink/70">
             {description} All submissions include a timestamp for {timezone}.
           </p>
         </header>
@@ -335,7 +335,7 @@ function ContactFormInner({
         <form onSubmit={handleSubmit} className="mt-6 space-y-5" noValidate>
           <div className="grid gap-4 md:grid-cols-2">
             <div>
-              <label htmlFor="name" className="block text-sm font-semibold text-heading mb-2">
+              <label htmlFor="name" className="block text-xs font-medium uppercase tracking-[0.1em] text-primary mb-2">
                 Name *
               </label>
               <input
@@ -343,14 +343,14 @@ function ContactFormInner({
                 id="name"
                 value={formState.name}
                 onChange={(e) => handleChange("name")(e)}
-                className="w-full rounded-full border border-outline/60 bg-panel px-4 py-2.5 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none"
+                className="w-full border border-outline/60 bg-panel px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:border-primary focus:outline-none"
                 required
               />
-              {error && error.includes("Name") && <p className="text-red-500 text-sm mt-1">{error}</p>}
+              {error && error.includes("Name") && <p className="text-red-500 text-xs mt-1">{error}</p>}
             </div>
 
             <div>
-              <label htmlFor="company" className="block text-sm font-semibold text-heading mb-2">
+              <label htmlFor="company" className="block text-xs font-medium uppercase tracking-[0.1em] text-primary mb-2">
                 Company
               </label>
               <input
@@ -358,14 +358,14 @@ function ContactFormInner({
                 id="company"
                 value={formState.company}
                 onChange={(e) => handleChange("company")(e)}
-                className="w-full rounded-full border border-outline/60 bg-panel px-4 py-2.5 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none"
+                className="w-full border border-outline/60 bg-panel px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:border-primary focus:outline-none"
               />
             </div>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
             <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-heading mb-2">
+              <label htmlFor="email" className="block text-xs font-medium uppercase tracking-[0.1em] text-primary mb-2">
                 Email *
               </label>
               <input
@@ -373,14 +373,14 @@ function ContactFormInner({
                 id="email"
                 value={formState.email}
                 onChange={(e) => handleChange("email")(e)}
-                className="w-full rounded-full border border-outline/60 bg-panel px-4 py-2.5 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none"
+                className="w-full border border-outline/60 bg-panel px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:border-primary focus:outline-none"
                 required
               />
-              {error && error.includes("Email") && <p className="text-red-500 text-sm mt-1">{error}</p>}
+              {error && error.includes("Email") && <p className="text-red-500 text-xs mt-1">{error}</p>}
             </div>
 
             <div>
-              <label htmlFor="phone" className="block text-sm font-semibold text-heading mb-2">
+              <label htmlFor="phone" className="block text-xs font-medium uppercase tracking-[0.1em] text-primary mb-2">
                 Phone *
               </label>
               <input
@@ -388,22 +388,22 @@ function ContactFormInner({
                 id="phone"
                 value={formState.phone}
                 onChange={(e) => handleChange("phone")(e)}
-                className="w-full rounded-full border border-outline/60 bg-panel px-4 py-2.5 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none"
+                className="w-full border border-outline/60 bg-panel px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:border-primary focus:outline-none"
                 required
               />
-              {error && error.includes("Phone") && <p className="text-red-500 text-sm mt-1">{error}</p>}
+              {error && error.includes("Phone") && <p className="text-red-500 text-xs mt-1">{error}</p>}
             </div>
           </div>
 
           <div>
-            <label htmlFor="projectType" className="block text-sm font-semibold text-heading mb-2">
+            <label htmlFor="projectType" className="block text-xs font-medium uppercase tracking-[0.1em] text-primary mb-2">
               Project Type *
             </label>
             <select
               id="projectType"
               value={formState.projectType}
               onChange={(e) => handleChange("projectType")(e)}
-              className="w-full rounded-full border border-outline/60 bg-panel px-4 py-2.5 text-sm text-ink focus:border-accent focus:outline-none"
+              className="w-full border border-outline/60 bg-panel px-4 py-3 text-sm text-ink focus:border-primary focus:outline-none"
               required
             >
               <option value="">Select a project type</option>
@@ -411,12 +411,12 @@ function ContactFormInner({
                 <option key={type} value={type}>{type}</option>
               ))}
             </select>
-            {error && error.includes("Project type") && <p className="text-red-500 text-sm mt-1">{error}</p>}
+            {error && error.includes("Project type") && <p className="text-red-500 text-xs mt-1">{error}</p>}
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
             <div>
-              <label htmlFor="property" className="block text-sm font-semibold text-heading mb-2">
+              <label htmlFor="property" className="block text-xs font-medium uppercase tracking-[0.1em] text-primary mb-2">
                 Property Being Sold
               </label>
               <input
@@ -425,11 +425,11 @@ function ContactFormInner({
                 value={formState.property}
                 onChange={(e) => handleChange("property")(e)}
                 placeholder="Include property type, location, and estimated value (optional)"
-                className="w-full rounded-full border border-outline/60 bg-panel px-4 py-2.5 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none"
+                className="w-full border border-outline/60 bg-panel px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:border-primary focus:outline-none"
               />
             </div>
             <div>
-              <label htmlFor="estimatedCloseDate" className="block text-sm font-semibold text-heading mb-2">
+              <label htmlFor="estimatedCloseDate" className="block text-xs font-medium uppercase tracking-[0.1em] text-primary mb-2">
                 Estimated Close Date
               </label>
               <input
@@ -437,13 +437,13 @@ function ContactFormInner({
                 id="estimatedCloseDate"
                 value={formState.estimatedCloseDate}
                 onChange={(e) => handleChange("estimatedCloseDate")(e)}
-                className="w-full rounded-full border border-outline/60 bg-panel px-4 py-2.5 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none"
+                className="w-full border border-outline/60 bg-panel px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:border-primary focus:outline-none"
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="city" className="block text-sm font-semibold text-heading mb-2">
+            <label htmlFor="city" className="block text-xs font-medium uppercase tracking-[0.1em] text-primary mb-2">
               City
             </label>
             <input
@@ -452,12 +452,12 @@ function ContactFormInner({
               value={formState.city}
               onChange={(e) => handleChange("city")(e)}
               placeholder="Primary metro or submarket (optional)"
-              className="w-full rounded-full border border-outline/60 bg-panel px-4 py-2.5 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none"
+              className="w-full border border-outline/60 bg-panel px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:border-primary focus:outline-none"
             />
           </div>
 
           <div>
-            <label htmlFor="timeline" className="block text-sm font-semibold text-heading mb-2">
+            <label htmlFor="timeline" className="block text-xs font-medium uppercase tracking-[0.1em] text-primary mb-2">
               Timeline
             </label>
             <input
@@ -466,12 +466,12 @@ function ContactFormInner({
               value={formState.timeline}
               onChange={(e) => handleChange("timeline")(e)}
               placeholder="e.g., 45 days, 3 months, flexible (optional)"
-              className="w-full rounded-full border border-outline/60 bg-panel px-4 py-2.5 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none"
+              className="w-full border border-outline/60 bg-panel px-4 py-3 text-sm text-ink placeholder:text-ink/40 focus:border-primary focus:outline-none"
             />
           </div>
 
           <div>
-            <label htmlFor="details" className="block text-sm font-semibold text-heading mb-2">
+            <label htmlFor="details" className="block text-xs font-medium uppercase tracking-[0.1em] text-primary mb-2">
               Message
             </label>
             <textarea
@@ -480,7 +480,7 @@ function ContactFormInner({
               onChange={(e) => handleChange("details")(e)}
               rows={6}
               placeholder="Outline goals, replacement preferences, or coordination needs (optional)"
-              className="w-full rounded-2xl border border-outline/60 bg-secondary/30 p-3 text-sm text-ink placeholder:text-ink/50 focus:border-accent focus:outline-none resize-vertical"
+              className="w-full border border-outline/60 bg-secondary/30 p-4 text-sm text-ink placeholder:text-ink/40 focus:border-primary focus:outline-none resize-vertical"
             />
           </div>
 
@@ -497,24 +497,24 @@ function ContactFormInner({
 
           <button
             type="submit"
-            className="w-full rounded-full bg-gold px-6 py-3 text-sm font-semibold uppercase tracking-[0.32em] text-ink transition hover:-translate-y-0.5 hover:shadow-gold disabled:cursor-not-allowed disabled:opacity-60"
+            className="w-full bg-primary px-6 py-4 text-xs font-medium uppercase tracking-[0.15em] text-primaryfg transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
             disabled={status === "submitting" || (TURNSTILE_SITE_KEY && !turnstileReady) || siteKeyMissing}
           >
-            {status === "submitting" ? "Sending..." : "Send Message"}
+            {status === "submitting" ? "SENDING..." : "SEND MESSAGE"}
           </button>
 
           {status === "success" && (
             <p className="text-sm text-primary">Thank you. Our team will confirm receipt shortly.</p>
           )}
 
-          <div className="text-xs text-ink/60">
+          <div className="text-xs text-ink/50">
             <p>
-              Prefer to talk now? Call {" "}
-              <a className="text-accent underline" href={`tel:${CONTACT_PHONE_DIGITS}`}>
+              Prefer to talk now? Call{" "}
+              <a className="text-accent hover:text-primary" href={`tel:${CONTACT_PHONE_DIGITS}`}>
                 {CONTACT_PHONE}
               </a>{" "}
-              or email {" "}
-              <a className="text-accent underline" href={`mailto:${CONTACT_EMAIL}`}>
+              or email{" "}
+              <a className="text-accent hover:text-primary" href={`mailto:${CONTACT_EMAIL}`}>
                 {CONTACT_EMAIL}
               </a>
               .
@@ -535,10 +535,8 @@ function ContactFormWithSearchParams(props: ContactFormProps) {
 
 export default function ContactForm(props: ContactFormProps) {
   return (
-    <Suspense fallback={<div className="rounded-3xl border border-outline/60 bg-panel p-6">Loading form...</div>}>
+    <Suspense fallback={<div className="border border-outline/40 bg-panel p-6">Loading form...</div>}>
       <ContactFormWithSearchParams {...props} />
     </Suspense>
   );
 }
-
-

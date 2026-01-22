@@ -48,7 +48,7 @@ h4,
 h5,
 h6 {
   font-family: var(--font-playfair, "Playfair Display"), "Times New Roman", serif;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0.02em;
   line-height: 1.1;
 }
@@ -78,20 +78,20 @@ button {
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(26, 86, 50, 0.1);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(26, 86, 50, 0.3);
-  border-radius: 5px;
+  background: rgba(26, 86, 50, 0.2);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(26, 86, 50, 0.45);
+  background: rgba(26, 86, 50, 0.35);
 }
 
 /* Malibu Life Green Stripe */
@@ -100,17 +100,18 @@ button {
   left: 0;
   top: 0;
   bottom: 0;
-  width: 20px;
-  background: linear-gradient(180deg, #1A5632 0%, #1A5632 70%, #F5F3ED 70%, #F5F3ED 72%, #D4AF37 72%, #D4AF37 75%, #F5F3ED 75%);
+  width: 16px;
+  background: linear-gradient(180deg, #1A5632 0%, #1A5632 85%, #F5F3ED 85%, #F5F3ED 88%, #D4AF37 88%, #D4AF37 91%, #F5F3ED 91%);
   z-index: 100;
 }
 
-/* Script font style for "the" */
+/* Script font style for "the" - matching Malibu Life */
 .script-the {
   font-family: var(--font-playfair, "Playfair Display"), "Times New Roman", serif;
   font-style: italic;
   font-weight: 400;
   color: var(--color-accent);
+  line-height: 0.8;
 }
 
 /* Section title styling */
@@ -122,25 +123,18 @@ button {
   color: var(--color-primary);
 }
 
-/* Card hover effects */
-.malibu-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.malibu-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(26, 86, 50, 0.15);
-}
-
-/* Button styles */
+/* Malibu button outline style */
 .malibu-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid var(--color-primary);
   color: var(--color-primary);
   background: transparent;
   padding: 0.75rem 1.5rem;
   font-size: 0.75rem;
   font-weight: 500;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   transition: all 0.2s ease;
 }
@@ -150,40 +144,12 @@ button {
   color: var(--color-primaryfg);
 }
 
-/* FOR SALE badge */
-.for-sale-badge {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: transparent;
-  color: var(--color-accent);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
+/* Card hover effects */
+.malibu-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Carousel navigation */
-.carousel-nav {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.carousel-nav button {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  border: 1px solid var(--color-primary);
-  background: transparent;
-  color: var(--color-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-}
-
-.carousel-nav button:hover {
-  background: var(--color-primary);
-  color: var(--color-primaryfg);
+.malibu-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(26, 86, 50, 0.1);
 }

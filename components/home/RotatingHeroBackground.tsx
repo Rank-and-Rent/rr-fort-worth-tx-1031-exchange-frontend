@@ -16,8 +16,7 @@ export default function RotatingHeroBackground() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % heroImages.length);
-    }, 6000); // Rotate every 6 seconds
-
+    }, 6000);
     return () => clearInterval(interval);
   }, []);
 
@@ -26,21 +25,21 @@ export default function RotatingHeroBackground() {
       {heroImages.map((src, index) => (
         <div
           key={src}
-          className={`absolute inset-0 transition-opacity duration-1500 ease-in-out ${
+          className={`absolute inset-0 transition-opacity duration-[1500ms] ease-in-out ${
             index === currentIndex ? 'opacity-100' : 'opacity-0'
           }`}
         >
           <Image
             src={src}
-            alt={`Fort Worth, Texas skyline ${index + 1}`}
+            alt={`Fort Worth, Texas ${index + 1}`}
             fill
             priority={index === 0}
             className="object-cover"
             sizes="100vw"
             quality={90}
           />
-          {/* Malibu Life style overlay - subtle gradient */}
-          <div className="absolute inset-0 bg-gradient-to-b from-paper/30 via-paper/50 to-paper/70" />
+          {/* Subtle overlay to ensure text readability */}
+          <div className="absolute inset-0 bg-paper/40" />
         </div>
       ))}
     </div>

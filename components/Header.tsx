@@ -64,22 +64,22 @@ export default function Header() {
 
   return (
     <header ref={headerRef} className="fixed left-0 right-0 top-0 z-50 bg-paper/90 backdrop-blur-sm">
-      <div className="mx-auto flex items-center justify-between px-6 py-4 md:px-10 lg:px-14">
+      <div className="mx-auto flex items-center justify-between px-4 py-3 md:px-8 lg:px-12">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3">
+        <Link href="/" className="flex items-center">
           <Image
             src="/1031-exchange-fort-worth-tx-logo.png"
             alt={site.company}
-            width={140}
-            height={42}
-            className="h-10 w-auto object-contain md:h-12"
+            width={120}
+            height={36}
+            className="h-9 w-auto object-contain md:h-10"
             priority
             unoptimized
           />
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-8 lg:flex">
+        <nav className="hidden items-center gap-6 lg:flex xl:gap-8">
           {/* Services Dropdown */}
           <div 
             className="relative"
@@ -89,14 +89,14 @@ export default function Header() {
             <button
               type="button"
               className={clsx(
-                "flex items-center gap-2 text-xs font-medium tracking-[0.2em] text-primary transition hover:text-accent",
+                "flex items-center gap-1.5 text-[11px] font-medium tracking-[0.18em] text-primary transition hover:text-accent",
                 servicesOpen && "text-accent"
               )}
               aria-expanded={servicesOpen}
             >
               SERVICES
               <svg 
-                className={clsx("h-3 w-3 transition-transform", servicesOpen && "rotate-180")} 
+                className={clsx("h-2.5 w-2.5 transition-transform", servicesOpen && "rotate-180")} 
                 fill="none" 
                 viewBox="0 0 24 24" 
                 stroke="currentColor"
@@ -106,21 +106,27 @@ export default function Header() {
             </button>
           </div>
 
-          <Link href="/locations" className="text-xs font-medium tracking-[0.2em] text-primary transition hover:text-accent">
+          <Link href="/locations" className="text-[11px] font-medium tracking-[0.18em] text-primary transition hover:text-accent">
             NEIGHBORHOODS
           </Link>
-          <Link href="/tools" className="text-xs font-medium tracking-[0.2em] text-primary transition hover:text-accent">
+          
+          <Link href="/property-types" className="text-[11px] font-medium tracking-[0.18em] text-primary transition hover:text-accent">
+            PROPERTY TYPES
+          </Link>
+          
+          <Link href="/tools" className="text-[11px] font-medium tracking-[0.18em] text-primary transition hover:text-accent">
             TOOLS
           </Link>
-          <Link href="/contact" className="text-xs font-medium tracking-[0.2em] text-primary transition hover:text-accent">
+          
+          <Link href="/contact" className="text-[11px] font-medium tracking-[0.18em] text-primary transition hover:text-accent">
             CONTACT
           </Link>
         </nav>
 
-        {/* Yellow/Gold Hamburger Menu Button - Malibu Life Style */}
+        {/* Yellow/Gold Hamburger Menu Button */}
         <button
           type="button"
-          className="flex h-12 w-12 items-center justify-center rounded-full bg-accent text-primary transition hover:bg-accent/90"
+          className="flex h-11 w-11 items-center justify-center rounded-full bg-accent text-primary transition hover:bg-accent/90"
           onClick={(e) => {
             e.stopPropagation();
             setMobileMenuOpen((prev) => !prev);
@@ -128,18 +134,18 @@ export default function Header() {
           aria-expanded={mobileMenuOpen}
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
         >
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-1">
             <span className={clsx(
-              "block h-0.5 w-5 bg-current transition-all duration-300",
-              mobileMenuOpen && "translate-y-2 rotate-45"
+              "block h-[2px] w-4 bg-current transition-all duration-300",
+              mobileMenuOpen && "translate-y-[6px] rotate-45"
             )} />
             <span className={clsx(
-              "block h-0.5 w-5 bg-current transition-all duration-300",
+              "block h-[2px] w-4 bg-current transition-all duration-300",
               mobileMenuOpen && "opacity-0"
             )} />
             <span className={clsx(
-              "block h-0.5 w-5 bg-current transition-all duration-300",
-              mobileMenuOpen && "-translate-y-2 -rotate-45"
+              "block h-[2px] w-4 bg-current transition-all duration-300",
+              mobileMenuOpen && "-translate-y-[6px] -rotate-45"
             )} />
           </div>
         </button>
@@ -150,28 +156,28 @@ export default function Header() {
         ref={dropdownRef}
         className={clsx(
           "absolute left-0 right-0 top-full bg-paper shadow-lg transition-all duration-300",
-          servicesOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
+          servicesOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
         )}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <div className="mx-auto max-w-5xl px-8 py-8 md:px-12 lg:px-16">
-          <div className="grid gap-4 md:grid-cols-4">
+        <div className="mx-auto max-w-5xl px-6 py-6 md:px-10">
+          <div className="grid gap-3 md:grid-cols-4">
             {servicesPreview.map((service) => (
               <Link
                 key={service.slug}
                 href={service.route}
-                className="border-b border-outline/30 py-3 text-sm text-primary transition hover:border-primary hover:text-accent"
+                className="border-b border-outline/20 py-2.5 text-sm text-primary transition hover:border-primary hover:text-accent"
                 onClick={() => setServicesOpen(false)}
               >
                 {service.name}
               </Link>
             ))}
           </div>
-          <div className="mt-6">
+          <div className="mt-4">
             <Link
               href="/services"
-              className="text-xs font-medium tracking-[0.15em] text-accent transition hover:text-primary"
+              className="text-[10px] font-medium tracking-[0.15em] text-accent transition hover:text-primary"
               onClick={() => setServicesOpen(false)}
             >
               VIEW ALL SERVICES &rarr;
@@ -187,57 +193,57 @@ export default function Header() {
           mobileMenuOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"
         )}
       >
-        {/* Close button in top right */}
+        {/* Close button */}
         <button
           type="button"
-          className="absolute right-6 top-4 flex h-12 w-12 items-center justify-center rounded-full bg-accent text-primary md:right-10"
+          className="absolute right-4 top-3 flex h-11 w-11 items-center justify-center rounded-full bg-accent text-primary md:right-8"
           onClick={() => setMobileMenuOpen(false)}
           aria-label="Close menu"
         >
-          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 
-        <nav className="flex h-full flex-col items-center justify-center gap-8">
+        <nav className="flex h-full flex-col items-center justify-center gap-6">
           <Link
             href="/services"
-            className="font-serif text-3xl font-light tracking-[0.1em] text-primary transition hover:text-accent md:text-4xl"
+            className="font-serif text-2xl font-light tracking-[0.1em] text-primary transition hover:text-accent md:text-3xl"
             onClick={() => setMobileMenuOpen(false)}
           >
             SERVICES
           </Link>
           <Link
             href="/locations"
-            className="font-serif text-3xl font-light tracking-[0.1em] text-primary transition hover:text-accent md:text-4xl"
+            className="font-serif text-2xl font-light tracking-[0.1em] text-primary transition hover:text-accent md:text-3xl"
             onClick={() => setMobileMenuOpen(false)}
           >
             NEIGHBORHOODS
           </Link>
           <Link
             href="/property-types"
-            className="font-serif text-3xl font-light tracking-[0.1em] text-primary transition hover:text-accent md:text-4xl"
+            className="font-serif text-2xl font-light tracking-[0.1em] text-primary transition hover:text-accent md:text-3xl"
             onClick={() => setMobileMenuOpen(false)}
           >
             PROPERTY TYPES
           </Link>
           <Link
             href="/tools"
-            className="font-serif text-3xl font-light tracking-[0.1em] text-primary transition hover:text-accent md:text-4xl"
+            className="font-serif text-2xl font-light tracking-[0.1em] text-primary transition hover:text-accent md:text-3xl"
             onClick={() => setMobileMenuOpen(false)}
           >
             TOOLS
           </Link>
           <Link
             href="/about"
-            className="font-serif text-3xl font-light tracking-[0.1em] text-primary transition hover:text-accent md:text-4xl"
+            className="font-serif text-2xl font-light tracking-[0.1em] text-primary transition hover:text-accent md:text-3xl"
             onClick={() => setMobileMenuOpen(false)}
           >
             ABOUT
           </Link>
           <Link
             href="/contact"
-            className="mt-8 border border-primary px-10 py-4 text-sm font-medium tracking-[0.2em] text-primary transition hover:bg-primary hover:text-primaryfg"
+            className="mt-6 border border-primary px-8 py-3 text-xs font-medium tracking-[0.2em] text-primary transition hover:bg-primary hover:text-primaryfg"
             onClick={() => setMobileMenuOpen(false)}
           >
             CONTACT US

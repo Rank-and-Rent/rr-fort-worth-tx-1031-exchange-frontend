@@ -48,8 +48,8 @@ h4,
 h5,
 h6 {
   font-family: var(--font-playfair, "Playfair Display"), "Times New Roman", serif;
-  font-weight: 400;
-  letter-spacing: 0.02em;
+  font-weight: 300;
+  letter-spacing: 0.03em;
   line-height: 1.1;
 }
 
@@ -100,25 +100,25 @@ button {
   left: 0;
   top: 0;
   bottom: 0;
-  width: 16px;
+  width: 14px;
   background: linear-gradient(180deg, #1A5632 0%, #1A5632 85%, #F5F3ED 85%, #F5F3ED 88%, #D4AF37 88%, #D4AF37 91%, #F5F3ED 91%);
   z-index: 100;
 }
 
-/* Script font style for "the" - matching Malibu Life exactly */
+/* Script font style for "the" */
 .script-the {
   font-family: var(--font-playfair, "Playfair Display"), "Times New Roman", serif;
   font-style: italic;
-  font-weight: 400;
+  font-weight: 300;
   color: var(--color-accent);
-  line-height: 0.7;
+  line-height: 0.8;
   display: block;
 }
 
 /* Section title styling */
 .section-title {
   font-family: var(--font-playfair, "Playfair Display"), "Times New Roman", serif;
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: 0.05em;
   color: var(--color-primary);
 }
@@ -131,8 +131,8 @@ button {
   border: 1px solid var(--color-primary);
   color: var(--color-primary);
   background: transparent;
-  padding: 0.875rem 1.75rem;
-  font-size: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.625rem;
   font-weight: 500;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -144,7 +144,7 @@ button {
   color: var(--color-primaryfg);
 }
 
-/* Scrolling animation for property types */
+/* Luxurious scrolling animation for property types */
 @keyframes scroll {
   0% {
     transform: translateX(0);
@@ -155,7 +155,7 @@ button {
 }
 
 .animate-scroll {
-  animation: scroll 20s linear infinite;
+  animation: scroll 25s linear infinite;
 }
 
 .animate-scroll:hover {
@@ -178,4 +178,20 @@ button {
 .malibu-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 16px 32px rgba(26, 86, 50, 0.1);
+}
+
+/* Popup animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.fixed.z-\[200\] > div {
+  animation: fadeIn 0.3s ease-out;
 }

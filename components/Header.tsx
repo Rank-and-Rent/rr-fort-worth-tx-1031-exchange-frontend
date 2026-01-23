@@ -63,23 +63,23 @@ export default function Header() {
   };
 
   return (
-    <header ref={headerRef} className="fixed left-0 right-0 top-0 z-50 bg-paper/95 backdrop-blur">
-      <div className="mx-auto flex items-center justify-between px-8 py-5 md:px-12 lg:px-16">
+    <header ref={headerRef} className="fixed left-0 right-0 top-0 z-50 bg-paper/90 backdrop-blur-sm">
+      <div className="mx-auto flex items-center justify-between px-6 py-4 md:px-10 lg:px-14">
         {/* Logo */}
-        <Link href="/" className="flex items-center">
+        <Link href="/" className="flex items-center gap-3">
           <Image
             src="/1031-exchange-fort-worth-tx-logo.png"
             alt={site.company}
-            width={160}
-            height={48}
-            className="h-12 w-auto object-contain md:h-14"
+            width={140}
+            height={42}
+            className="h-10 w-auto object-contain md:h-12"
             priority
             unoptimized
           />
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-10 lg:flex">
+        <nav className="hidden items-center gap-8 lg:flex">
           {/* Services Dropdown */}
           <div 
             className="relative"
@@ -107,7 +107,7 @@ export default function Header() {
           </div>
 
           <Link href="/locations" className="text-xs font-medium tracking-[0.2em] text-primary transition hover:text-accent">
-            LOCATIONS
+            NEIGHBORHOODS
           </Link>
           <Link href="/tools" className="text-xs font-medium tracking-[0.2em] text-primary transition hover:text-accent">
             TOOLS
@@ -117,10 +117,10 @@ export default function Header() {
           </Link>
         </nav>
 
-        {/* Hamburger Menu Button */}
+        {/* Yellow/Gold Hamburger Menu Button - Malibu Life Style */}
         <button
           type="button"
-          className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primaryfg transition hover:bg-primary/90"
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-accent text-primary transition hover:bg-accent/90"
           onClick={(e) => {
             e.stopPropagation();
             setMobileMenuOpen((prev) => !prev);
@@ -128,18 +128,18 @@ export default function Header() {
           aria-expanded={mobileMenuOpen}
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
         >
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1.5">
             <span className={clsx(
-              "block h-0.5 w-5 bg-current transition-transform",
-              mobileMenuOpen && "translate-y-1.5 rotate-45"
+              "block h-0.5 w-5 bg-current transition-all duration-300",
+              mobileMenuOpen && "translate-y-2 rotate-45"
             )} />
             <span className={clsx(
-              "block h-0.5 w-5 bg-current transition-opacity",
+              "block h-0.5 w-5 bg-current transition-all duration-300",
               mobileMenuOpen && "opacity-0"
             )} />
             <span className={clsx(
-              "block h-0.5 w-5 bg-current transition-transform",
-              mobileMenuOpen && "-translate-y-1.5 -rotate-45"
+              "block h-0.5 w-5 bg-current transition-all duration-300",
+              mobileMenuOpen && "-translate-y-2 -rotate-45"
             )} />
           </div>
         </button>
@@ -149,7 +149,7 @@ export default function Header() {
       <div
         ref={dropdownRef}
         className={clsx(
-          "absolute left-0 right-0 top-full bg-paper/98 shadow-lg backdrop-blur transition-all duration-300",
+          "absolute left-0 right-0 top-full bg-paper shadow-lg transition-all duration-300",
           servicesOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
         )}
         onMouseEnter={handleMouseEnter}
@@ -180,52 +180,64 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Full Screen Mobile Menu */}
       <div
         className={clsx(
-          "fixed inset-0 top-[72px] bg-paper/98 backdrop-blur transition-all duration-300 lg:hidden",
-          mobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
+          "fixed inset-0 top-0 bg-paper transition-all duration-500",
+          mobileMenuOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"
         )}
       >
-        <nav className="flex flex-col gap-6 p-8">
+        {/* Close button in top right */}
+        <button
+          type="button"
+          className="absolute right-6 top-4 flex h-12 w-12 items-center justify-center rounded-full bg-accent text-primary md:right-10"
+          onClick={() => setMobileMenuOpen(false)}
+          aria-label="Close menu"
+        >
+          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        <nav className="flex h-full flex-col items-center justify-center gap-8">
           <Link
             href="/services"
-            className="text-lg font-medium tracking-[0.1em] text-primary"
+            className="font-serif text-3xl font-light tracking-[0.1em] text-primary transition hover:text-accent md:text-4xl"
             onClick={() => setMobileMenuOpen(false)}
           >
             SERVICES
           </Link>
           <Link
             href="/locations"
-            className="text-lg font-medium tracking-[0.1em] text-primary"
+            className="font-serif text-3xl font-light tracking-[0.1em] text-primary transition hover:text-accent md:text-4xl"
             onClick={() => setMobileMenuOpen(false)}
           >
-            LOCATIONS
+            NEIGHBORHOODS
           </Link>
           <Link
             href="/property-types"
-            className="text-lg font-medium tracking-[0.1em] text-primary"
+            className="font-serif text-3xl font-light tracking-[0.1em] text-primary transition hover:text-accent md:text-4xl"
             onClick={() => setMobileMenuOpen(false)}
           >
             PROPERTY TYPES
           </Link>
           <Link
             href="/tools"
-            className="text-lg font-medium tracking-[0.1em] text-primary"
+            className="font-serif text-3xl font-light tracking-[0.1em] text-primary transition hover:text-accent md:text-4xl"
             onClick={() => setMobileMenuOpen(false)}
           >
             TOOLS
           </Link>
           <Link
             href="/about"
-            className="text-lg font-medium tracking-[0.1em] text-primary"
+            className="font-serif text-3xl font-light tracking-[0.1em] text-primary transition hover:text-accent md:text-4xl"
             onClick={() => setMobileMenuOpen(false)}
           >
             ABOUT
           </Link>
           <Link
             href="/contact"
-            className="mt-4 bg-primary px-6 py-4 text-center text-sm font-medium tracking-[0.15em] text-primaryfg"
+            className="mt-8 border border-primary px-10 py-4 text-sm font-medium tracking-[0.2em] text-primary transition hover:bg-primary hover:text-primaryfg"
             onClick={() => setMobileMenuOpen(false)}
           >
             CONTACT US

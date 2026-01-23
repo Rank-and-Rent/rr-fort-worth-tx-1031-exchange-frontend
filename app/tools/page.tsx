@@ -1,8 +1,9 @@
+import Image from "next/image";
+import Link from "next/link";
 import { CalculatorIcon, ShieldCheckIcon } from "@heroicons/react/24/outline";
 import type { ComponentType, SVGProps } from "react";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import site from "@/content/site.json";
-import Link from "next/link";
 import type { Metadata } from "next";
 import { PRIMARY_CITY } from "@/lib/constants";
 import { toolsData } from "@/data";
@@ -60,65 +61,100 @@ const toolIcons: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
 
 export default function ToolsIndexPage() {
   return (
-    <>
-      <Breadcrumbs items={breadcrumbItems} />
-      <div className="mx-auto max-w-4xl px-6 py-12 md:px-8 md:py-20">
-        <h1 className="font-serif text-3xl font-bold text-[#0B3C5D] md:text-4xl mb-4">Tools</h1>
-        <p className="text-lg text-gray-700 mb-8">
-          These calculators and checkers keep Fort Worth exchanges compliant with reporting timelines and
-          identification rules. Use them before calling your Qualified Intermediary.
-        </p>
-
-        <div className="grid gap-6 md:grid-cols-2">
-          {toolsData.map((tool) => {
-            const Icon = toolIcons[tool.slug] ?? CalculatorIcon;
-            return (
-              <Link key={tool.slug} href={tool.route} className="block">
-                <article className="group h-full rounded-2xl border border-gray-200 bg-white/90 p-6 shadow-lg shadow-black/10 transition hover:-translate-y-1 hover:shadow-2xl">
-                  <div className="flex items-center justify-between gap-2">
-                    <Icon className="h-8 w-8 text-[#0B3C5D]" aria-hidden />
-                    <span className="rounded-full border border-[#0B3C5D] px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[#0B3C5D]">
-                      Tools
-                    </span>
-                  </div>
-                  <h2 className="mt-4 text-2xl font-semibold text-[#0B3C5D]">{tool.name}</h2>
-                  <p className="mt-2 text-sm text-ink/70">{tool.description}</p>
-                  <p className="mt-6 text-xs font-semibold uppercase tracking-[0.35em] text-[#C9A227]">
-                    Open tool {">"}
-                  </p>
-                </article>
-              </Link>
-            );
-          })}
+    <div className="bg-paper">
+      {/* Hero Section */}
+      <section className="relative py-20 lg:py-28">
+        <div className="absolute inset-0">
+          <Image
+            src="/fort-worth-texas-1031-exchange-homepage-hero-2.jpg"
+            alt="Tools"
+            fill
+            className="object-cover"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-black/50" />
         </div>
+        <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 lg:px-14">
+          <Breadcrumbs items={breadcrumbItems} className="text-white/70" />
+          <h1 className="mt-6 font-serif text-4xl text-white md:text-5xl lg:text-6xl" style={{ fontWeight: 300 }}>
+            TOOLS
+          </h1>
+          <p className="mt-4 max-w-2xl text-base text-white/80">
+            These calculators and checkers keep Fort Worth exchanges compliant with reporting timelines and identification rules.
+          </p>
+        </div>
+      </section>
 
-        <div className="mt-12 border-t border-gray-200 pt-8">
-          <h2 className="font-serif text-2xl font-bold text-[#0B3C5D] mb-4">Need help beyond calculators?</h2>
-          <div className="space-y-2 text-sm text-ink">
-            <Link href="/services/boot-analysis" className="text-[#0B3C5D] underline hover:text-[#C9A227]">
-              Boot Analysis Services
-            </Link>
+      {/* Tools Grid */}
+      <section className="py-14 lg:py-20">
+        <div className="mx-auto max-w-7xl px-6 md:px-10 lg:px-14">
+          <div className="grid gap-6 md:grid-cols-2">
+            {toolsData.map((tool) => {
+              const Icon = toolIcons[tool.slug] ?? CalculatorIcon;
+              return (
+                <Link key={tool.slug} href={tool.route} className="group">
+                  <article className="h-full border border-outline/30 bg-panel p-6 transition hover:border-primary/30">
+                    <div className="flex items-center justify-between gap-2">
+                      <Icon className="h-8 w-8 text-primary" aria-hidden />
+                      <span className="bg-accent px-2 py-1 text-[9px] font-medium tracking-[0.15em] text-primary">
+                        TOOL
+                      </span>
+                    </div>
+                    <h2 className="mt-4 font-serif text-2xl text-primary group-hover:text-accent" style={{ fontWeight: 400 }}>
+                      {tool.name}
+                    </h2>
+                    <p className="mt-2 text-sm text-ink/60">{tool.description}</p>
+                    <p className="mt-6 text-[10px] font-medium tracking-[0.15em] text-accent">
+                      OPEN TOOL &rarr;
+                    </p>
+                  </article>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Related Services */}
+      <section className="bg-secondary/50 py-14 lg:py-20">
+        <div className="mx-auto max-w-7xl px-6 md:px-10 lg:px-14">
+          <h2 className="font-serif text-3xl italic text-primary md:text-4xl">
+            NEED HELP BEYOND CALCULATORS?
+          </h2>
+          <div className="mt-6 flex flex-wrap gap-4">
             <Link
-              href="/services/property-identification"
-              className="text-[#0B3C5D] underline hover:text-[#C9A227]"
+              href="/services"
+              className="border-b border-primary/30 pb-1 text-sm text-primary transition hover:border-primary hover:text-accent"
             >
-              Property Identification Advisory
-            </Link>
-            <Link
-              href="/services/exchange-consultation"
-              className="text-[#0B3C5D] underline hover:text-[#C9A227]"
-            >
-              Exchange Consultation
+              View All Services
             </Link>
           </div>
         </div>
+      </section>
 
-        <script
-          type="application/ld+json"
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-        />
-      </div>
-    </>
+      {/* CTA */}
+      <section className="bg-primary py-14 lg:py-20">
+        <div className="mx-auto max-w-4xl px-6 text-center md:px-10">
+          <h2 className="font-serif text-3xl text-white md:text-4xl" style={{ fontWeight: 300 }}>
+            Questions About Your Exchange?
+          </h2>
+          <p className="mt-4 text-sm text-white/70">
+            Our team is here to help you navigate the 1031 exchange process.
+          </p>
+          <Link
+            href="/contact"
+            className="mt-8 inline-block border border-white px-8 py-3 text-[10px] font-medium tracking-[0.2em] text-white transition hover:bg-white hover:text-primary"
+          >
+            CONTACT US
+          </Link>
+        </div>
+      </section>
+
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+    </div>
   );
 }

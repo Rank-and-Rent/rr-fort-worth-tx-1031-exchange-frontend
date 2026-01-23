@@ -8,7 +8,7 @@ import { locationsData, servicesData } from "@/data";
 import type { LocationItem, ServiceItem } from "@/data";
 import { getProfessionalServiceSchema } from "@/lib/seo";
 
-// Property types we handle - for the luxurious scrolling section
+// Property types we handle
 const propertyTypes = [
   "Residential",
   "Commercial", 
@@ -19,6 +19,42 @@ const propertyTypes = [
   "Medical",
   "Hospitality",
 ];
+
+// Benefits of 1031 Exchange
+const benefits = [
+  {
+    title: "Defer Capital Gains Tax",
+    description: "Postpone paying federal and state capital gains taxes by reinvesting proceeds into like-kind property.",
+  },
+  {
+    title: "Grow Your Portfolio Faster",
+    description: "Use 100% of your sale proceeds to acquire larger or multiple replacement properties.",
+  },
+  {
+    title: "Diversify Your Investments",
+    description: "Exchange into different property types, geographic locations, or asset classes.",
+  },
+  {
+    title: "Increase Your Cash Flow",
+    description: "Trade up to properties with better income potential and higher returns.",
+  },
+  {
+    title: "Estate Planning Benefits",
+    description: "Pass properties to heirs with a stepped-up cost basis, potentially eliminating deferred taxes.",
+  },
+  {
+    title: "Consolidate or Divide",
+    description: "Exchange multiple properties into one, or one property into several for flexibility.",
+  },
+];
+
+// Service images mapping
+const serviceImages: Record<string, string> = {
+  "forward-exchange": "/fort-worth-texas-1031-exchange-homepage-hero-1.jpg",
+  "reverse-exchange": "/fort-worth-texas-1031-exchange-homepage-hero-2.jpg",
+  "delayed-exchange": "/fort-worth-texas-1031-exchange-homepage-hero-3.jpg",
+  "improvement-exchange": "/fort-worth-texas-1031-exchange-homepage-hero-4.jpg",
+};
 
 export default function Home() {
   const featuredMarkets = locationsData.filter((l: LocationItem) => l.type === "city").slice(0, 6);
@@ -64,7 +100,7 @@ export default function Home() {
               </svg>
             </button>
             <div className="text-center">
-              <span className="script-the text-3xl">the</span>
+              <p className="font-serif text-lg italic text-accent">the</p>
               <h3 className="font-serif text-2xl tracking-[0.1em] text-primary">FORT WORTH EXCHANGE</h3>
               <p className="mt-4 text-sm text-ink/70">
                 Ready to start your 1031 exchange? Our team of experts is here to guide you through every step.
@@ -92,7 +128,6 @@ export default function Home() {
       <main>
         {/* HERO - Full Screen Video */}
         <section className="relative h-screen overflow-hidden">
-          {/* Video Background */}
           <video
             autoPlay
             muted
@@ -104,58 +139,59 @@ export default function Home() {
           </video>
           <div className="absolute inset-0 bg-black/30" />
           
-          {/* Hero Content - Professional Logo Treatment */}
           <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
-            <div className="space-y-2">
-              <p className="font-serif text-2xl font-light italic tracking-wide text-accent md:text-3xl">the</p>
-              <h1 className="font-serif text-6xl font-extralight tracking-[0.25em] text-accent md:text-8xl lg:text-9xl" style={{ fontWeight: 200 }}>
-                FORT WORTH
-              </h1>
-              <h2 className="font-serif text-5xl font-extralight tracking-[0.25em] text-accent md:text-7xl lg:text-8xl" style={{ fontWeight: 200 }}>
-                EXCHANGE
-              </h2>
-            </div>
+            <p className="font-serif text-2xl italic text-accent md:text-3xl">the</p>
+            <h1 className="font-serif text-6xl tracking-[0.2em] text-accent md:text-8xl lg:text-9xl" style={{ fontWeight: 200 }}>
+              FORT WORTH
+            </h1>
+            <h2 className="font-serif text-5xl tracking-[0.2em] text-accent md:text-7xl lg:text-8xl" style={{ fontWeight: 200 }}>
+              EXCHANGE
+            </h2>
           </div>
         </section>
 
-        {/* SERVICES - Smaller Cards, Full View */}
-        <section className="bg-paper py-16 lg:py-20">
+        {/* SERVICES - With Images */}
+        <section className="bg-paper py-14 lg:py-18">
           <div className="mx-auto max-w-7xl px-6 md:px-10 lg:px-14">
-            <h2 className="font-serif text-3xl font-light italic text-primary md:text-4xl">
+            <h2 className="font-serif text-3xl italic text-primary md:text-4xl">
               EXPLORE OUR SERVICES
-              </h2>
+            </h2>
             
-            <div className="mt-8 overflow-hidden">
-              <div 
-                className="flex gap-4 transition-transform duration-500 ease-out"
-                style={{ transform: `translateX(-${carouselIndex * 33.333}%)` }}
-              >
-                {servicesShowcase.map((service: ServiceItem) => (
+            <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
+              {servicesShowcase.map((service: ServiceItem, index: number) => {
+                const imageIndex = (index % 4) + 1;
+                const imageSrc = `/fort-worth-texas-1031-exchange-homepage-hero-${imageIndex}.jpg`;
+                
+                return (
                   <Link
                     key={service.slug}
                     href={service.route}
-                    className="group relative min-w-[calc(33.333%-0.75rem)] flex-shrink-0"
+                    className="group"
                   >
-                    <div className="relative aspect-[5/3] overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5">
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="font-serif text-8xl font-extralight text-primary/10">1031</span>
-                      </div>
-                      <span className="absolute right-3 top-3 text-[10px] font-medium tracking-[0.2em] text-accent">
+                    <div className="relative aspect-[16/10] overflow-hidden">
+                      <Image
+                        src={imageSrc}
+                        alt={service.name}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                      <div className="absolute inset-0 bg-black/20 transition-colors group-hover:bg-black/30" />
+                      <span className="absolute right-3 top-3 bg-accent px-2 py-1 text-[9px] font-medium tracking-[0.15em] text-primary">
                         SERVICE
                       </span>
                     </div>
                     <div className="mt-3">
-                      <p className="font-serif text-xl text-primary">{service.name}</p>
-                      <p className="mt-1 text-xs uppercase tracking-[0.1em] text-ink/40">
+                      <p className="font-serif text-lg text-primary group-hover:text-accent">{service.name}</p>
+                      <p className="mt-1 text-[10px] uppercase tracking-[0.15em] text-ink/40">
                         {service.category}
                       </p>
                     </div>
                   </Link>
-                ))}
-              </div>
+                );
+              })}
             </div>
 
-            {/* Carousel Nav */}
             <div className="mt-8 flex items-center justify-between">
               <div className="flex gap-2">
                 <button 
@@ -181,26 +217,26 @@ export default function Home() {
               </div>
               <Link href="/services" className="malibu-btn-outline text-[10px]">
                 VIEW ALL
-                </Link>
+              </Link>
             </div>
           </div>
         </section>
 
-        {/* FEATURED NEIGHBORHOODS - Full Bleed Grid */}
+        {/* FEATURED NEIGHBORHOODS */}
         <section className="bg-paper">
-          <h2 className="py-6 text-center font-serif text-3xl font-light italic text-primary md:text-4xl">
+          <h2 className="py-6 text-center font-serif text-3xl italic text-primary md:text-4xl">
             FEATURED NEIGHBORHOODS
-              </h2>
+          </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3">
             {featuredMarkets.map((market: LocationItem) => (
-                    <Link
+              <Link
                 key={market.slug}
                 href={market.route}
                 className="group relative aspect-[4/3] overflow-hidden"
               >
                 {market.heroImage && (
-                          <Image
+                  <Image
                     src={market.heroImage}
                     alt={market.name}
                     fill
@@ -210,40 +246,39 @@ export default function Home() {
                 )}
                 <div className="absolute inset-0 bg-black/30 transition-colors group-hover:bg-black/40" />
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <h3 className="font-serif text-2xl font-light tracking-[0.15em] text-white md:text-3xl">
+                  <h3 className="font-serif text-2xl tracking-[0.15em] text-white md:text-3xl" style={{ fontWeight: 300 }}>
                     {market.name.toUpperCase()}
                   </h3>
                   <div className="mt-4 opacity-0 transition-opacity group-hover:opacity-100">
                     <span className="border border-white px-4 py-2 text-[10px] tracking-[0.2em] text-white">
                       LEARN MORE
                     </span>
-                        </div>
-                      </div>
-                    </Link>
+                  </div>
+                </div>
+              </Link>
             ))}
           </div>
         </section>
 
-        {/* PROPERTY TYPES - Luxurious Scrolling Marquee */}
+        {/* PROPERTY TYPES - Luxurious Marquee */}
         <section className="overflow-hidden border-y border-primary/10 bg-paper py-8">
-          <div className="flex animate-scroll items-center gap-20 whitespace-nowrap">
+          <div className="flex animate-scroll items-center gap-16 whitespace-nowrap">
             {[...propertyTypes, ...propertyTypes, ...propertyTypes].map((type, i) => (
-              <span key={i} className="flex items-center gap-20">
-                <span className="font-serif text-3xl font-extralight italic tracking-[0.15em] text-primary/50 md:text-4xl">
+              <span key={i} className="flex items-center gap-16">
+                <span className="font-serif text-2xl italic tracking-[0.1em] text-primary/40 md:text-3xl" style={{ fontWeight: 300 }}>
                   {type}
                 </span>
-                <span className="text-accent">&#9830;</span>
-                </span>
-              ))}
+                <span className="text-sm text-accent">&#9830;</span>
+              </span>
+            ))}
           </div>
         </section>
 
-        {/* WHY 1031 EXCHANGE FORT WORTH */}
-        <section className="bg-paper py-16 lg:py-20">
-          <div className="mx-auto grid max-w-7xl gap-10 px-6 md:px-10 lg:grid-cols-2 lg:gap-16 lg:px-14">
-            {/* Left: Staggered Images */}
+        {/* WHY FORT WORTH EXCHANGE */}
+        <section className="bg-paper py-14 lg:py-18">
+          <div className="mx-auto grid max-w-7xl gap-10 px-6 md:px-10 lg:grid-cols-2 lg:gap-14 lg:px-14">
             <div className="flex gap-4">
-              <div className="relative mt-12 aspect-[3/4] w-1/2 overflow-hidden">
+              <div className="relative mt-10 aspect-[3/4] w-1/2 overflow-hidden">
                 <Image
                   src="/fort-worth-texas-1031-exchange-homepage-hero-1.jpg"
                   alt="Fort Worth skyline"
@@ -263,75 +298,78 @@ export default function Home() {
               </div>
             </div>
             
-            {/* Right: Content */}
             <div className="flex flex-col justify-center">
-              <h2 className="font-serif text-3xl font-light uppercase tracking-[0.08em] text-primary md:text-4xl">
+              <h2 className="font-serif text-3xl uppercase tracking-[0.08em] text-primary md:text-4xl" style={{ fontWeight: 300 }}>
                 THE FORT WORTH EXCHANGE
               </h2>
-              <p className="mt-6 text-sm leading-relaxed text-ink/70">
+              <p className="mt-5 text-sm leading-relaxed text-ink/70">
                 Founded in Fort Worth, our team represents the most experienced 1031 exchange advisors in Texas. We specialize in helping investors defer capital gains through strategic property exchanges, with deep expertise in NNN retail, medical, industrial, and residential assets.
               </p>
               <p className="mt-4 text-sm leading-relaxed text-ink/70">
-                Our team continues to bring in record transactions year after year, ranking among the top 1031 exchange specialists nationally. We operate under a client-first mentality, which means exceptional service is our top priority—as is staying ahead of the ever-changing real estate industry.
+                Our team continues to bring in record transactions year after year, ranking among the top 1031 exchange specialists nationally. We operate under a client-first mentality, which means exceptional service is our top priority.
               </p>
-              <div className="mt-8 flex items-center gap-4">
+              <div className="mt-6 flex items-center gap-4">
                 <Link href="/about" className="malibu-btn-outline text-[10px]">
                   MEET THE TEAM
                 </Link>
                 <Link
                   href="/contact"
-                  className="bg-primary px-6 py-3 text-[10px] font-medium tracking-[0.15em] text-primaryfg transition hover:bg-primary/90"
+                  className="bg-primary px-5 py-3 text-[10px] font-medium tracking-[0.15em] text-primaryfg transition hover:bg-primary/90"
                 >
                   INQUIRE NOW
-                    </Link>
+                </Link>
               </div>
             </div>
           </div>
         </section>
 
-        {/* WHAT OUR CLIENTS SAY - Matching Reference Exactly */}
-        <section className="relative py-24 lg:py-32">
+        {/* BENEFITS OF 1031 EXCHANGE */}
+        <section className="relative py-20 lg:py-28">
           <div className="absolute inset-0">
             <Image
               src="/fort-worth-texas-1031-exchange-homepage-hero-3.jpg"
-              alt="Fort Worth landscape"
+              alt="Fort Worth"
               fill
               className="object-cover"
               sizes="100vw"
             />
-            <div className="absolute inset-0 bg-black/50" />
+            <div className="absolute inset-0 bg-black/60" />
           </div>
           
           <div className="relative z-10 mx-auto max-w-6xl px-6 md:px-10 lg:px-14">
-            <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-              {/* Left: Logo Mark */}
-              <div className="flex justify-center lg:justify-start">
-                <div className="text-center lg:text-left">
-                  <Image
-                    src="/1031-exchange-fort-worth-tx-logo.png"
-                    alt="Fort Worth 1031 Exchange"
-                    width={120}
-                    height={120}
-                    className="mx-auto h-24 w-auto opacity-70 lg:mx-0"
-                  />
-                </div>
-            </div>
-
-              {/* Right: Testimonial */}
+            <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
+              {/* Left: Branding */}
+              <div className="text-center lg:text-left">
+                <Image
+                  src="/1031-exchange-fort-worth-tx-logo.png"
+                  alt="Fort Worth 1031 Exchange"
+                  width={100}
+                  height={100}
+                  className="mx-auto mb-4 h-20 w-auto opacity-60 lg:mx-0"
+                />
+                <p className="font-serif text-lg italic text-accent">the</p>
+                <p className="font-serif text-2xl tracking-[0.15em] text-white md:text-3xl" style={{ fontWeight: 300 }}>FORT WORTH</p>
+                <p className="font-serif text-xl tracking-[0.15em] text-accent md:text-2xl" style={{ fontWeight: 300 }}>EXCHANGE</p>
+              </div>
+              
+              {/* Right: Benefits */}
               <div>
-                <h3 className="font-serif text-xl font-light uppercase tracking-[0.2em] text-white/80 md:text-2xl">
-                  WHAT OUR CLIENTS SAY
+                <h3 className="font-serif text-xl uppercase tracking-[0.15em] text-white md:text-2xl" style={{ fontWeight: 300 }}>
+                  THE BENEFITS OF 1031 EXCHANGE
                 </h3>
-                <blockquote className="mt-6 text-base leading-relaxed text-white/90 md:text-lg">
-                  &ldquo;An absolute pleasure working with the Fort Worth team. They responded quickly and were very knowledgeable and friendly. Would recommend to anyone looking to complete a 1031 exchange.&rdquo;
-                </blockquote>
-                <p className="mt-4 text-xs font-medium uppercase tracking-[0.15em] text-white/60">
-                  &mdash; FORT WORTH INVESTOR
-                </p>
-                <div className="mt-8 flex items-center gap-6">
-                  <span className="text-sm text-white/40">01 / <span className="text-white/70">03</span></span>
-                  <Link href="/contact" className="border border-white/50 px-5 py-2.5 text-[10px] font-medium tracking-[0.15em] text-white transition hover:bg-white hover:text-primary">
-                    VIEW ALL
+                
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  {benefits.map((benefit, index) => (
+                    <div key={index} className="border-l-2 border-accent/50 pl-3">
+                      <h4 className="text-sm font-medium text-white">{benefit.title}</h4>
+                      <p className="mt-1 text-xs text-white/60">{benefit.description}</p>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="mt-8">
+                  <Link href="/services" className="border border-white/50 px-5 py-2.5 text-[10px] font-medium tracking-[0.15em] text-white transition hover:bg-white hover:text-primary">
+                    LEARN MORE
                   </Link>
                 </div>
               </div>
@@ -340,7 +378,7 @@ export default function Home() {
         </section>
 
         {/* CTA */}
-        <section className="relative py-28 lg:py-40">
+        <section className="relative py-24 lg:py-36">
           <div className="absolute inset-0">
             <Image
               src="/fort-worth-texas-1031-exchange-homepage-hero-4.jpg"
@@ -353,19 +391,19 @@ export default function Home() {
           </div>
           
           <div className="relative z-10 flex flex-col items-center justify-center px-6 text-center">
-            <p className="font-serif text-2xl font-light italic tracking-wide text-accent md:text-3xl">the</p>
-            <h2 className="font-serif text-5xl font-extralight tracking-[0.25em] text-accent md:text-7xl lg:text-8xl" style={{ fontWeight: 200 }}>
+            <p className="font-serif text-2xl italic text-accent md:text-3xl">the</p>
+            <h2 className="font-serif text-5xl tracking-[0.2em] text-accent md:text-7xl lg:text-8xl" style={{ fontWeight: 200 }}>
               FORT WORTH
-              </h2>
-            <p className="font-serif text-4xl font-extralight tracking-[0.25em] text-accent md:text-6xl lg:text-7xl" style={{ fontWeight: 200 }}>
+            </h2>
+            <p className="font-serif text-4xl tracking-[0.2em] text-accent md:text-6xl lg:text-7xl" style={{ fontWeight: 200 }}>
               EXCHANGE
             </p>
-                <Link
+            <Link
               href="/contact"
-              className="mt-10 border border-white/70 px-8 py-3.5 text-[10px] font-medium tracking-[0.2em] text-white transition hover:bg-white hover:text-primary"
-                >
+              className="mt-10 border border-white/70 px-7 py-3 text-[10px] font-medium tracking-[0.2em] text-white transition hover:bg-white hover:text-primary"
+            >
               WORK WITH US
-                </Link>
+            </Link>
           </div>
         </section>
       </main>

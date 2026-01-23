@@ -1,10 +1,10 @@
 import { Suspense } from "react";
 import Script from "next/script";
+import Image from "next/image";
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ContactForm from "./contact-form";
-import IdentificationLetterHelper from "@/components/widgets/IdentificationLetterHelper";
-import { COMPANY_NAME, CONTACT_ADDRESS, CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_DIGITS, PRIMARY_CITY, PRIMARY_STATE_ABBR } from "@/lib/constants";
+import { COMPANY_NAME, CONTACT_ADDRESS, CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_DIGITS } from "@/lib/constants";
 import { createPageMetadata, getBreadcrumbJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
@@ -21,47 +21,74 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className="bg-panel py-16">
-      <div className="container mx-auto space-y-10">
-        <Breadcrumbs items={breadcrumbs} />
-        <header className="space-y-2">
-          <p className="text-xs uppercase tracking-[0.35em] text-ink/60">Contact</p>
-          <h1 className="text-4xl font-semibold text-heading">Connect with our desk</h1>
-          <p className="text-base text-ink/80">
+    <div className="bg-paper">
+      {/* Hero Section */}
+      <section className="relative py-20 lg:py-28">
+        <div className="absolute inset-0">
+          <Image
+            src="/fort-worth-texas-1031-exchange-homepage-hero-4.jpg"
+            alt="Fort Worth"
+            fill
+            className="object-cover"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-black/50" />
+        </div>
+        <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10 lg:px-14">
+          <Breadcrumbs items={breadcrumbs} className="text-white/70" />
+          <h1 className="mt-6 font-serif text-4xl text-white md:text-5xl lg:text-6xl" style={{ fontWeight: 300 }}>
+            CONTACT US
+          </h1>
+          <p className="mt-4 max-w-2xl text-base text-white/80">
             Fill out the form and we will respond with an introductory call plus a replacement property game plan.
           </p>
-        </header>
+        </div>
+      </section>
 
-        <div className="grid gap-8 lg:grid-cols-2">
-          <Suspense fallback={<div>Loading form...</div>}>
-            <ContactForm />
-          </Suspense>
-          <div className="space-y-6 rounded-2xl border border-outline bg-secondary/40 p-6">
-            <section>
-              <h2 className="text-2xl font-semibold text-heading">Office info</h2>
-              <ul className="mt-4 space-y-3 text-sm text-ink/80">
-                <li>
-                  Address: {CONTACT_ADDRESS}
-                </li>
-                <li>
-                  Phone:{" "}
-                  <a href={`tel:${CONTACT_PHONE_DIGITS}`} className="text-primary hover:underline">
-                    {CONTACT_PHONE}
-                  </a>
-                </li>
-                <li>
-                  Email:{" "}
-                  <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary hover:underline">
-                    {CONTACT_EMAIL}
-                  </a>
-                </li>
-                <li>Hours: Monday-Friday: 8am-6pm</li>
-              </ul>
-            </section>
+      {/* Contact Content */}
+      <section className="py-14 lg:py-20">
+        <div className="mx-auto max-w-7xl px-6 md:px-10 lg:px-14">
+          <div className="grid gap-10 lg:grid-cols-2">
+            {/* Form */}
+            <Suspense fallback={<div className="border border-outline/30 bg-panel p-6">Loading form...</div>}>
+              <ContactForm />
+            </Suspense>
+            
+            {/* Info */}
+            <div className="space-y-8">
+              <div className="border border-outline/30 bg-panel p-6">
+                <h2 className="font-serif text-2xl text-primary" style={{ fontWeight: 400 }}>Office Info</h2>
+                <ul className="mt-4 space-y-3 text-sm text-ink/70">
+                  <li className="flex items-start gap-2">
+                    <span className="text-accent">&#9830;</span>
+                    <span>{CONTACT_ADDRESS}</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-accent">&#9830;</span>
+                    <span>
+                      Phone:{" "}
+                      <a href={`tel:${CONTACT_PHONE_DIGITS}`} className="text-primary hover:text-accent">
+                        {CONTACT_PHONE}
+                      </a>
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-accent">&#9830;</span>
+                    <span>
+                      Email:{" "}
+                      <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary hover:text-accent">
+                        {CONTACT_EMAIL}
+                      </a>
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-accent">&#9830;</span>
+                    <span>Hours: Monday-Friday, 8am-6pm</span>
+                  </li>
+                </ul>
+              </div>
 
-            <section className="space-y-3">
-              <h3 className="text-xl font-semibold text-heading">Map</h3>
-              <div className="h-60 overflow-hidden rounded-2xl border border-outline">
+              <div className="h-64 overflow-hidden border border-outline/30">
                 <iframe
                   width="100%"
                   height="100%"
@@ -73,18 +100,18 @@ export default function ContactPage() {
                   title={`Map of ${CONTACT_ADDRESS}`}
                 />
               </div>
-            </section>
 
-            <section className="space-y-2 text-sm text-ink/70">
-              <p>This site helps investors identify potential replacement properties for Section 1031 exchanges.</p>
-              <p>This site is not a Qualified Intermediary, law firm, broker, or CPA.</p>
-              <p>Users should consult a Qualified Intermediary and tax advisor before acting.</p>
-            </section>
+              <div className="border border-outline/30 bg-panel p-6">
+                <p className="text-xs text-ink/50">
+                  This site helps investors identify potential replacement properties for Section 1031 exchanges. 
+                  We are not a Qualified Intermediary, law firm, broker, or CPA. 
+                  Users should consult a Qualified Intermediary and tax advisor before acting.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-
-        <IdentificationLetterHelper />
-      </div>
+      </section>
 
       <Script
         id="contact-breadcrumbs"
@@ -94,4 +121,3 @@ export default function ContactPage() {
     </div>
   );
 }
-

@@ -5,7 +5,18 @@ import Link from "next/link";
 import Image from "next/image";
 import clsx from "clsx";
 import site from "@/content/site.json";
-import { servicesData } from "@/data";
+
+// Core 1031 Exchange Services for header dropdown
+const exchangeServices = [
+  { slug: "forward-exchange", name: "Forward Exchange" },
+  { slug: "reverse-exchange", name: "Reverse Exchange" },
+  { slug: "delayed-exchange", name: "Delayed Exchange" },
+  { slug: "improvement-exchange", name: "Improvement Exchange" },
+  { slug: "build-to-suit", name: "Build-to-Suit Exchange" },
+  { slug: "dst-placement", name: "DST Placement" },
+  { slug: "qualified-intermediary", name: "Qualified Intermediary Services" },
+  { slug: "property-identification", name: "Property Identification" },
+];
 
 export default function Header() {
   const [servicesOpen, setServicesOpen] = useState(false);
@@ -13,8 +24,6 @@ export default function Header() {
   const headerRef = useRef<HTMLElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const servicesPreview = servicesData.slice(0, 8);
 
   const cancelCloseTimeout = () => {
     if (closeTimeoutRef.current) {
@@ -163,10 +172,10 @@ export default function Header() {
       >
         <div className="mx-auto max-w-5xl px-6 py-6 md:px-10">
           <div className="grid gap-3 md:grid-cols-4">
-            {servicesPreview.map((service) => (
+            {exchangeServices.map((service) => (
               <Link
                 key={service.slug}
-                href={service.route}
+                href={`/services/${service.slug}`}
                 className="border-b border-outline/20 py-2.5 text-sm text-primary transition hover:border-primary hover:text-accent"
                 onClick={() => setServicesOpen(false)}
               >

@@ -1,10 +1,76 @@
 import Script from "next/script";
 import Image from "next/image";
 import Link from "next/link";
-import { servicesData } from "@/data/services";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { createPageMetadata, getBreadcrumbJsonLd } from "@/lib/seo";
 import type { Metadata } from "next";
+
+// Core 1031 Exchange Services
+const exchangeServices = [
+  {
+    slug: "forward-exchange",
+    name: "Forward Exchange",
+    description: "Sell your property first, then acquire replacement property within 180 days. The most straightforward exchange structure.",
+    category: "Exchange Types",
+    image: "/fort-worth-texas-1031-exchange-homepage-hero-1.jpg",
+  },
+  {
+    slug: "reverse-exchange",
+    name: "Reverse Exchange",
+    description: "Acquire replacement property before selling your relinquished property. Ideal when timing is critical.",
+    category: "Exchange Types",
+    image: "/fort-worth-texas-1031-exchange-homepage-hero-2.jpg",
+  },
+  {
+    slug: "delayed-exchange",
+    name: "Delayed Exchange",
+    description: "The most common type - identify replacement property within 45 days of sale and close within 180 days.",
+    category: "Exchange Types",
+    image: "/fort-worth-texas-1031-exchange-homepage-hero-3.jpg",
+  },
+  {
+    slug: "improvement-exchange",
+    name: "Improvement Exchange",
+    description: "Use exchange funds to make improvements on the replacement property before taking title.",
+    category: "Exchange Types",
+    image: "/fort-worth-texas-1031-exchange-homepage-hero-4.jpg",
+  },
+  {
+    slug: "build-to-suit",
+    name: "Build-to-Suit Exchange",
+    description: "Construct new improvements on land using your exchange proceeds. Perfect for custom developments.",
+    category: "Exchange Types",
+    image: "/fort-worth-texas-1031-exchange-homepage-hero-1.jpg",
+  },
+  {
+    slug: "dst-placement",
+    name: "DST Placement",
+    description: "Invest in institutional-quality Delaware Statutory Trust properties for passive income.",
+    category: "Investment Options",
+    image: "/fort-worth-texas-1031-exchange-homepage-hero-2.jpg",
+  },
+  {
+    slug: "qualified-intermediary",
+    name: "Qualified Intermediary Services",
+    description: "Expert QI coordination to hold your funds and ensure IRS compliance throughout the exchange.",
+    category: "Support Services",
+    image: "/fort-worth-texas-1031-exchange-homepage-hero-3.jpg",
+  },
+  {
+    slug: "property-identification",
+    name: "Property Identification",
+    description: "Strategic guidance on identifying replacement properties within the 45-day window using IRS rules.",
+    category: "Support Services",
+    image: "/fort-worth-texas-1031-exchange-homepage-hero-4.jpg",
+  },
+  {
+    slug: "timeline-management",
+    name: "Timeline Management",
+    description: "Dedicated tracking and reminders to keep your 45-day and 180-day deadlines on schedule.",
+    category: "Support Services",
+    image: "/fort-worth-texas-1031-exchange-homepage-hero-1.jpg",
+  },
+];
 
 export const metadata: Metadata = createPageMetadata({
   title: "1031 Exchange Services | Fort Worth Replacement Property Support",
@@ -38,7 +104,7 @@ export default function ServicesPage() {
             1031 EXCHANGE SERVICES
           </h1>
           <p className="mt-4 max-w-2xl text-base text-white/80">
-            Pick the support path that keeps your 45 day and 180 day deadlines safe. Search by service name or property focus.
+            Comprehensive 1031 exchange solutions to help you defer capital gains and grow your real estate portfolio.
           </p>
         </div>
       </section>
@@ -47,43 +113,38 @@ export default function ServicesPage() {
       <section className="py-14 lg:py-20">
         <div className="mx-auto max-w-7xl px-6 md:px-10 lg:px-14">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {servicesData.map((service, index) => {
-              const imageIndex = (index % 4) + 1;
-              const imageSrc = `/fort-worth-texas-1031-exchange-homepage-hero-${imageIndex}.jpg`;
-              
-              return (
-                <Link
-                  key={service.slug}
-                  href={service.route}
-                  className="group"
-                >
-                  <article className="overflow-hidden border border-outline/30 bg-panel transition hover:border-primary/30">
-                    <div className="relative aspect-[16/10] overflow-hidden">
-                      <Image
-                        src={imageSrc}
-                        alt={service.name}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                      />
-                      <div className="absolute inset-0 bg-black/20" />
-                      <span className="absolute right-3 top-3 bg-accent px-2 py-1 text-[9px] font-medium tracking-[0.15em] text-primary">
-                        {service.category.toUpperCase()}
-                      </span>
-                    </div>
-                    <div className="p-5">
-                      <h2 className="font-serif text-xl text-primary group-hover:text-accent" style={{ fontWeight: 400 }}>
-                        {service.name}
-                      </h2>
-                      <p className="mt-2 text-sm text-ink/60 line-clamp-2">{service.short}</p>
-                      <p className="mt-4 text-[10px] font-medium tracking-[0.15em] text-accent">
-                        LEARN MORE &rarr;
-                      </p>
-                    </div>
-                  </article>
-                </Link>
-              );
-            })}
+            {exchangeServices.map((service) => (
+              <Link
+                key={service.slug}
+                href={`/services/${service.slug}`}
+                className="group"
+              >
+                <article className="overflow-hidden border border-outline/30 bg-panel transition hover:border-primary/30">
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <Image
+                      src={service.image}
+                      alt={service.name}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-black/20" />
+                    <span className="absolute right-3 top-3 bg-accent px-2 py-1 text-[9px] font-medium tracking-[0.15em] text-primary">
+                      {service.category.toUpperCase()}
+                    </span>
+                  </div>
+                  <div className="p-5">
+                    <h2 className="font-serif text-xl text-primary group-hover:text-accent" style={{ fontWeight: 400 }}>
+                      {service.name}
+                    </h2>
+                    <p className="mt-2 text-sm text-ink/60 line-clamp-2">{service.description}</p>
+                    <p className="mt-4 text-[10px] font-medium tracking-[0.15em] text-accent">
+                      LEARN MORE &rarr;
+                    </p>
+                  </div>
+                </article>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
